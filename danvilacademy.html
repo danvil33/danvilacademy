@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Danvil Academy — Escape the Matrix</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg: #f2f4f8;
+      --card: #ffffff;
+      --muted: #7a8596;
+      --accent: #2f80ed; /* deep blue */
+      --accent-2: #5aa3ff;
+      --green: #20c997;
+      --soft-shadow: 0 8px 20px rgba(18,38,63,0.06);
+      --radius-lg: 18px;
+      --radius-sm: 12px;
+    }
+
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      justify-content:center;
+      padding:28px;
+    }
+
+    /* The phone-like column */
+    .screen {
+      width: 360px;              /* matches typical mobile size */
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: var(--soft-shadow);
+      overflow: hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 780px;
+      border: 1px solid rgba(20,30,50,0.02);
+      position: relative;
+    }
+
+    /* Top area */
+    .topbar{
+      padding:18px 18px 6px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .welcome {
+      font-size:14px;
+      color:#98a0ad;
+    }
+    .welcome strong{
+      display:block;
+      font-size:15px;
+      color:#0b1220;
+      font-weight:600;
+      margin-top:4px;
+    }
+    .icon-btn{
+      width:40px;height:40px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg, rgba(47,128,237,0.06), rgba(47,128,237,0.02));
+      box-shadow: 0 2px 6px rgba(47,128,237,0.06);
+      cursor: pointer;
+    }
+
+    /* "Skills Available" cards row */
+    .skills {
+      padding: 8px 14px 18px 14px;
+      display:flex;
+      gap:12px;
+      justify-content:space-between;
+    }
+    .skill {
+      flex:1;
+      min-width:0;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+      border-radius: 14px;
+      padding:14px;
+      text-align:center;
+      box-shadow:0 6px 18px rgba(12,30,50,0.03);
+      border:1px solid rgba(15,30,60,0.03);
+    }
+    .skill .ico {
+      width:38px;height:38px;border-radius:10px;
+      display:inline-flex;align-items:center;justify-content:center;
+      background:#eef6ff;color:var(--accent);
+      margin-bottom:8px;
+      font-size:18px;
+    }
+    .skill h4{
+      margin:0;font-size:13px;color:#0b1220;font-weight:600;
+      line-height:1;
+    }
+    .skill p{ margin:6px 0 0;color:var(--muted); font-size:12px; }
+
+    /* Discount banner */
+    .promo {
+      margin: 10px 16px;
+      background: linear-gradient(135deg, rgba(47,128,237,0.95), rgb(65,143,255));
+      color:white;
+      border-radius: 16px;
+      padding: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      overflow:visible;
+      position:relative;
+    }
+    .promo .txt{
+      max-width:62%;
+    }
+    .promo h3{
+      margin:0;font-size:18px;font-weight:700;
+      letter-spacing: -0.2px;
+    }
+    .promo p{margin:6px 0 0;font-size:13px;opacity:0.95}
+    .promo .avatar-wrap{
+      width:86px;height:86px;border-radius:14px;
+      background:rgba(255,255,255,0.14);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 8px 26px rgba(47,128,237,0.14);
+      transform: translateX(8px);
+    }
+    /* little decorative wave SVG placed inside .promo bottom-right */
+    .promo svg.waves{
+      position:absolute; right:-12px; bottom:-18px; opacity:0.12;
+      transform: rotate(-8deg);
+    }
+
+    /* Courses section */
+    .section {
+      padding: 8px 16px 90px 16px; /* bottom padding to avoid nav overlap */
+      flex:1;
+      overflow:auto;
+    }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:6px 2px 10px 2px;
+    }
+    .section-head h3{ margin:0; font-size:15px;color:#111; font-weight:700;}
+    .seeall{ color:var(--muted); font-size:13px; text-decoration:none; }
+
+    .course-list{ display:flex; flex-direction:column; gap:14px; margin-top:6px; }
+
+    .course {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      background:var(--card);
+      border-radius:14px;
+      padding:12px;
+      box-shadow:0 8px 20px rgba(12,30,50,0.03);
+      border:1px solid rgba(12,30,50,0.03);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .course:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(12,30,50,0.08);
+    }
+    .course .thumb{
+      width:62px;height:62px;border-radius:10px;
+      background:linear-gradient(180deg,#fff,#f7fbff);
+      flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .course .thumb i{ 
+      font-size: 24px; 
+      color: var(--accent);
+    }
+
+    .course .meta h4{ margin:0; font-size:14px; color:#0b1220; font-weight:600;}
+    .course .meta p{ margin:6px 0 0; color:var(--muted); font-size:12px; }
+
+    /* bottom nav */
+    .bottom-nav{
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background:transparent;
+      padding:10px 16px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+      border-top-left-radius:20px;
+      border-top-right-radius:20px;
+      margin-top:auto;
+      backdrop-filter: blur(2px);
+      width: 360px;
+      z-index: 100;
+    }
+    .nav-card{
+      background:#fff;
+      display:flex;align-items:center;gap:10px;
+      padding:10px 18px;border-radius:16px;
+      box-shadow:0 8px 20px rgba(12,30,50,0.04);
+      width:100%;
+      justify-content:space-around;
+      border:1px solid rgba(12,30,50,0.03);
+    }
+    .nav-item{
+      display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted);
+      text-decoration:none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .nav-item.active{ color:var(--accent); font-weight:600; }
+    .nav-item:hover { color: var(--accent); }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0b1220;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      border: 2px solid #e1e5ee;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .payment-option:hover {
+      border-color: var(--accent);
+      background: #f8faff;
+    }
+
+    .payment-option i {
+      font-size: 24px;
+      color: var(--accent);
+      width: 30px;
+    }
+
+    .payment-info {
+      flex: 1;
+    }
+
+    .payment-info h4 {
+      margin: 0;
+      font-size: 16px;
+      color: #0b1220;
+    }
+
+    .payment-info p {
+      margin: 5px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .mobile-payment-details {
+      background: #f8faff;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .mobile-payment-details p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .copy-btn, .paid-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+
+    .paid-btn {
+      background: var(--green);
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    .status-active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-inactive {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    /* Profile Page Styles */
+    .profile-section {
+      padding: 20px;
+      display: none;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      color: white;
+      font-size: 32px;
+    }
+
+    .profile-info {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--soft-shadow);
+      margin-bottom: 20px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .info-value {
+      color: #0b1220;
+      font-weight: 600;
+    }
+
+    /* Custom Alert Styles */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .alert-content {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 300px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .alert-icon {
+      font-size: 48px;
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+
+    .alert-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #0b1220;
+    }
+
+    .alert-message {
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* All Courses Section */
+    .all-courses-section {
+      padding: 20px;
+      display: none;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    /* small screens shrink */
+    @media (max-width:420px){
+      .screen{ width:340px; }
+      .bottom-nav { width: 340px; }
+    }
+    @media (max-width:360px){
+      body{padding:12px;}
+      .screen{ width:100%; min-height:760px;}
+      .bottom-nav { width: 100%; bottom: 12px; }
+    }
+
+    /* tiny helpers */
+    .muted { color:var(--muted); font-size:12px; }
+  </style>
+</head>
+<body>
+
+  <main class="screen" role="main" aria-label="Danvil Academy - Escape the Matrix">
+
+    <!-- topbar -->
+    <header class="topbar">
+      <div>
+        <div class="welcome" aria-hidden="true">Welcome back,</div>
+        <div class="welcome"><strong id="userName">User</strong></div>
+      </div>
+
+      <!-- notification button -->
+      <button class="icon-btn" aria-label="Notifications" title="Notifications">
+        <i class="fas fa-bell"></i>
+      </button>
+    </header>
+
+    <!-- Home Section -->
+    <div id="home-section">
+      <!-- skill cards -->
+      <div class="skills" role="region" aria-label="Available skills">
+        <article class="skill" aria-label="AI Automation - 12 courses">
+          <div class="ico" aria-hidden="true">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h4>AI Automation</h4>
+          <p>12 Courses</p>
+        </article>
+
+        <article class="skill" aria-label="Web Development - 8 courses">
+          <div class="ico" aria-hidden="true">
+            <i class="fas fa-code"></i>
+          </div>
+          <h4>Web Dev</h4>
+          <p>8 Courses</p>
+        </article>
+
+        <article class="skill" aria-label="Forex Trading - 6 courses">
+          <div class="ico" aria-hidden="true">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h4>Forex Trading</h4>
+          <p>6 Courses</p>
+        </article>
+      </div>
+
+      <!-- promo/discount banner -->
+      <section class="promo" aria-label="Promotional banner - Escape the Matrix">
+        <div class="txt">
+          <h3>Escape <span style="opacity:0.98">The Matrix</span></h3>
+          <p style="margin:6px 0 0; font-weight:500; opacity:0.95;">Build Freedom Through AI & Digital Skills</p>
+        </div>
+
+        <!-- small rounded avatar -->
+        <div class="avatar-wrap" aria-hidden="true">
+          <i class="fas fa-graduation-cap" style="font-size: 40px; color: white;"></i>
+        </div>
+
+        <!-- decorative waves -->
+        <svg class="waves" width="160" height="160" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0 100c40 40 80 40 120 0s80-40 120 0" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.12"/>
+        </svg>
+      </section>
+
+      <!-- courses section -->
+      <section class="section" aria-labelledby="featured-courses">
+        <div class="section-head">
+          <h3 id="featured-courses">Featured Courses</h3>
+          <a class="seeall" href="#" aria-label="See all courses" onclick="showSection('all-courses')">See All</a>
+        </div>
+
+        <div class="course-list" role="list">
+
+          <!-- Course 1 -->
+          <article class="course" role="listitem" onclick="openPaymentModal('AI Mastery: From Zero to Automation')">
+            <div class="thumb" aria-hidden="true">
+              <i class="fas fa-cogs"></i>
+            </div>
+
+            <div class="meta">
+              <h4>AI Mastery: From Zero to Automation</h4>
+              <p>Learn to leverage AI tools to automate your work</p>
+            </div>
+          </article>
+
+          <!-- Course 2 -->
+          <article class="course" role="listitem" onclick="openPaymentModal('Web Development & Hosting')">
+            <div class="thumb" aria-hidden="true">
+              <i class="fas fa-code"></i>
+            </div>
+
+            <div class="meta">
+              <h4>Web Development & Hosting</h4>
+              <p>Master creating and hosting websites online</p>
+            </div>
+          </article>
+
+          <!-- Course 3 -->
+          <article class="course" role="listitem" onclick="openPaymentModal('Forex Trading Mastery')">
+            <div class="thumb" aria-hidden="true">
+              <i class="fas fa-chart-line"></i>
+            </div>
+
+            <div class="meta">
+              <h4>Forex Trading Mastery</h4>
+              <p>Master currency trading and market analysis</p>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- All Courses Section -->
+    <div id="all-courses-section" class="all-courses-section">
+      <div class="section-head">
+        <h3>All Courses</h3>
+        <a class="seeall" href="#" onclick="showSection('home')">Back</a>
+      </div>
+
+      <div class="courses-grid">
+        <!-- Course 1 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('AI Mastery: From Zero to Automation')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <div class="meta">
+            <h4>AI Mastery: From Zero to Automation</h4>
+            <p>Learn to leverage AI tools to automate your work</p>
+          </div>
+        </article>
+
+        <!-- Course 2 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Web Development & Hosting')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="meta">
+            <h4>Web Development & Hosting</h4>
+            <p>Master creating and hosting websites online</p>
+          </div>
+        </article>
+
+        <!-- Course 3 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Forex Trading Mastery')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="meta">
+            <h4>Forex Trading Mastery</h4>
+            <p>Master currency trading and market analysis</p>
+          </div>
+        </article>
+
+        <!-- Course 4 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Digital Mindset Revolution')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="meta">
+            <h4>Digital Mindset Revolution</h4>
+            <p>Rewire your thinking to break free from limiting beliefs</p>
+          </div>
+        </article>
+
+        <!-- Course 5 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Mobile App Development')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="meta">
+            <h4>Mobile App Development</h4>
+            <p>Build and monetize mobile apps for iOS and Android</p>
+          </div>
+        </article>
+
+        <!-- Course 6 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Blockchain & Crypto Development')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fab fa-bitcoin"></i>
+          </div>
+          <div class="meta">
+            <h4>Blockchain & Crypto Development</h4>
+            <p>Create tokens, NFTs, and smart contracts</p>
+          </div>
+        </article>
+
+        <!-- Course 7 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('AI Automation & Productivity')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="meta">
+            <h4>AI Automation & Productivity</h4>
+            <p>Use AI tools to automate work and earn passively</p>
+          </div>
+        </article>
+
+        <!-- Course 8 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Tech Business & Entrepreneurship')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="meta">
+            <h4>Tech Business & Entrepreneurship</h4>
+            <p>Turn coding skills into income and startups</p>
+          </div>
+        </article>
+
+        <!-- Course 9 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Financial Freedom Through Tech')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="meta">
+            <h4>Financial Freedom Through Tech</h4>
+            <p>Earn online through tech skills and digital entrepreneurship</p>
+          </div>
+        </article>
+
+        <!-- Course 10 -->
+        <article class="course" role="listitem" onclick="openPaymentModal('Tech Leadership & Innovation')">
+          <div class="thumb" aria-hidden="true">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="meta">
+            <h4>Tech Leadership & Innovation</h4>
+            <p>Train to become a tech leader building global solutions</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div id="profile-section" class="profile-section">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <h2 id="profileUserName">User Name</h2>
+        <div class="status-badge" id="membershipStatus">Inactive</div>
+      </div>
+
+      <div class="profile-info">
+        <div class="info-item">
+          <span class="info-label">Email:</span>
+          <span class="info-value" id="profileEmail">user@example.com</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Country:</span>
+          <span class="info-value" id="profileCountry">Unknown</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Membership:</span>
+          <span class="info-value" id="profileMembership">Free</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Status:</span>
+          <span class="info-value" id="profileStatus">Inactive</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Joined:</span>
+          <span class="info-value" id="profileJoinDate">Unknown</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="logout()" style="width: 100%;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <!-- bottom navigation -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <div class="nav-card" role="navigation">
+        <a class="nav-item active" onclick="showSection('home')">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+
+        <a class="nav-item" onclick="showSection('all-courses')">
+          <i class="fas fa-book-open"></i>
+          <span>Courses</span>
+        </a>
+
+        <a class="nav-item" onclick="showSection('tools')">
+          <i class="fas fa-tools"></i>
+          <span>Tools</span>
+        </a>
+
+        <a class="nav-item" onclick="showSection('profile')">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+      </div>
+    </nav>
+
+  </main>
+
+  <!-- Payment Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalCourseTitle">Purchase Course</h2>
+        <button class="close-modal" onclick="closePaymentModal()">&times;</button>
+      </div>
+      
+      <div class="price" id="modalCoursePrice">$70</div>
+      <div class="muted" style="text-align: center; margin-bottom: 20px;" id="convertedPrice"></div>
+      
+      <div class="payment-options">
+        <div class="payment-option" onclick="selectPayment('mobile')">
+          <i class="fas fa-mobile-alt"></i>
+          <div class="payment-info">
+            <h4>Mobile Payment</h4>
+            <p>Pay via mobile money transfer</p>
+          </div>
+        </div>
+        
+        <div class="payment-option" onclick="selectPayment('crypto')">
+          <i class="fab fa-bitcoin"></i>
+          <div class="payment-info">
+            <h4>Crypto Payment</h4>
+            <p>Pay with cryptocurrency</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mobile-payment-details" id="mobilePaymentDetails">
+        <p><strong>Send Payment to:</strong></p>
+        <p>Phone: <span id="paymentPhone">0743470389</span></p>
+        <p>Name: <span id="paymentName">DAVID JULIUS GINANE</span></p>
+        <p>Amount: $70</p>
+        <button class="copy-btn" onclick="copyPaymentDetails()">Copy Details</button>
+        <button class="paid-btn" onclick="markAsPaid()">I Have Paid</button>
+        <p style="margin-top: 10px; font-size: 12px; color: var(--muted);">
+          After payment, click "I Have Paid" and your account will be activated within 24 hours.
+        </p>
+      </div>
+      
+      <div class="mobile-payment-details" id="cryptoPaymentDetails">
+        <p><strong>Crypto Payment Coming Soon</strong></p>
+        <p style="font-size: 12px; color: var(--muted);">
+          We're working on integrating cryptocurrency payments. Check back soon!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Alert Modal -->
+  <div class="custom-alert" id="customAlert">
+    <div class="alert-content">
+      <div class="alert-icon">
+        <i class="fas fa-check-circle" id="alertIcon"></i>
+      </div>
+      <div class="alert-title" id="alertTitle">Success</div>
+      <div class="alert-message" id="alertMessage">Operation completed successfully</div>
+      <button class="alert-button" onclick="closeAlert()">OK</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEjeRSyKbpEmbNk0SYLUFPp3lbgP9x3Ow",
+      authDomain: "volcanobxpl.firebaseapp.com",
+      projectId: "volcanobxpl",
+      storageBucket: "volcanobxpl.firebasestorage.app",
+      messagingSenderId: "742861205377",
+      appId: "1:742861205377:web:bbe8a42b78c90354a64280",
+      measurementId: "G-G1KWGHLZES"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Currency conversion rates - Updated with Tanzania rate
+    const currencyRates = {
+      'US': { code: 'USD', rate: 1, symbol: '$', amount: 70 },
+      'KE': { code: 'KES', rate: 160, symbol: 'KSh', amount: 11200 },
+      'NG': { code: 'NGN', rate: 1500, symbol: '₦', amount: 105000 },
+      'ZA': { code: 'ZAR', rate: 18, symbol: 'R', amount: 1260 },
+      'GB': { code: 'GBP', rate: 0.79, symbol: '£', amount: 55.3 },
+      'CA': { code: 'CAD', rate: 1.35, symbol: 'C$', amount: 94.5 },
+      'AU': { code: 'AUD', rate: 1.52, symbol: 'A$', amount: 106.4 },
+      'IN': { code: 'INR', rate: 83, symbol: '₹', amount: 5810 },
+      'GH': { code: 'GHS', rate: 12, symbol: 'GH₵', amount: 840 },
+      'TZ': { code: 'TZS', rate: 2500, symbol: 'TSh', amount: 175000 }
+    };
+
+    let currentUser = null;
+    let userData = null;
+
+    // Check if user is logged in
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = 'index.html';
+      } else {
+        currentUser = user;
+        // Load user data
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          userData = userDoc.data();
+          updateUI(userData);
+        }
+      }
+    });
+
+    // Make functions available globally
+    window.auth = auth;
+    window.db = db;
+    window.signOut = signOut;
+    window.updateDoc = updateDoc;
+    window.doc = doc;
+    window.collection = collection;
+    window.addDoc = addDoc;
+    window.currencyRates = currencyRates;
+
+    function updateUI(userData) {
+      // Update user name in topbar
+      document.getElementById('userName').textContent = userData.name || 'User';
+      
+      // Update profile section
+      document.getElementById('profileUserName').textContent = userData.name || 'User';
+      document.getElementById('profileEmail').textContent = userData.email || 'Unknown';
+      document.getElementById('profileCountry').textContent = getCountryName(userData.country) || 'Unknown';
+      document.getElementById('profileMembership').textContent = userData.membership || 'Free';
+      document.getElementById('profileStatus').textContent = userData.status || 'Inactive';
+      document.getElementById('profileJoinDate').textContent = userData.createdAt ? userData.createdAt.toDate().toLocaleDateString() : 'Unknown';
+      
+      // Update status badge
+      const statusBadge = document.getElementById('membershipStatus');
+      statusBadge.textContent = userData.status === 'active' ? 'Active' : 'Inactive';
+      statusBadge.className = `status-badge ${userData.status === 'active' ? 'status-active' : 'status-inactive'}`;
+    }
+
+    function getCountryName(countryCode) {
+      const countries = {
+        'US': 'United States',
+        'KE': 'Kenya',
+        'NG': 'Nigeria',
+        'ZA': 'South Africa',
+        'GB': 'United Kingdom',
+        'CA': 'Canada',
+        'AU': 'Australia',
+        'IN': 'India',
+        'GH': 'Ghana',
+        'TZ': 'Tanzania'
+      };
+      return countries[countryCode] || countryCode;
+    }
+
+    window.updateUI = updateUI;
+    window.currentUser = currentUser;
+    window.userData = userData;
+  </script>
+
+  <script>
+    let selectedCourse = '';
+    let selectedPaymentType = '';
+    
+    function showSection(section) {
+      // Update navigation
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Show/hide sections
+      document.getElementById('home-section').style.display = section === 'home' ? 'block' : 'none';
+      document.getElementById('all-courses-section').style.display = section === 'all-courses' ? 'block' : 'none';
+      document.getElementById('profile-section').style.display = section === 'profile' ? 'block' : 'none';
+      
+      // For tools, show home section for now
+      if (section === 'tools') {
+        document.getElementById('home-section').style.display = 'block';
+        document.getElementById('all-courses-section').style.display = 'none';
+        document.getElementById('profile-section').style.display = 'none';
+      }
+    }
+    
+    function openPaymentModal(courseName) {
+      selectedCourse = courseName;
+      document.getElementById('modalCourseTitle').textContent = `Purchase ${courseName}`;
+      document.getElementById('paymentModal').style.display = 'flex';
+      
+      // Calculate converted price
+      if (window.userData && window.userData.country) {
+        const currency = window.currencyRates[window.userData.country] || window.currencyRates['US'];
+        document.getElementById('convertedPrice').textContent = 
+          `${currency.symbol}${currency.amount.toLocaleString()} ${currency.code}`;
+      } else {
+        document.getElementById('convertedPrice').textContent = '';
+      }
+      
+      // Reset payment details
+      document.getElementById('mobilePaymentDetails').style.display = 'none';
+      document.getElementById('cryptoPaymentDetails').style.display = 'none';
+      selectedPaymentType = '';
+    }
+    
+    function closePaymentModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
+    
+    function selectPayment(type) {
+      selectedPaymentType = type;
+      if (type === 'mobile') {
+        document.getElementById('mobilePaymentDetails').style.display = 'block';
+        document.getElementById('cryptoPaymentDetails').style.display = 'none';
+      } else if (type === 'crypto') {
+        document.getElementById('cryptoPaymentDetails').style.display = 'block';
+        document.getElementById('mobilePaymentDetails').style.display = 'none';
+      }
+    }
+    
+    function copyPaymentDetails() {
+      const phone = document.getElementById('paymentPhone').textContent;
+      const name = document.getElementById('paymentName').textContent;
+      const details = `Send $70 to:\nPhone: ${phone}\nName: ${name}\nCourse: ${selectedCourse}`;
+      
+      navigator.clipboard.writeText(details).then(() => {
+        showAlert('Success', 'Payment details copied to clipboard!', 'check-circle');
+      });
+    }
+    
+    async function markAsPaid() {
+      if (!selectedPaymentType) {
+        showAlert('Error', 'Please select a payment method first.', 'exclamation-circle');
+        return;
+      }
+      
+      if (!window.currentUser) {
+        showAlert('Error', 'You must be logged in to mark payment.', 'exclamation-circle');
+        return;
+      }
+      
+      try {
+        // Create payment record in Firestore
+        await addDoc(collection(db, "payments"), {
+          userId: window.currentUser.uid,
+          course: selectedCourse,
+          paymentMethod: selectedPaymentType,
+          amount: 70,
+          status: 'pending',
+          timestamp: new Date(),
+          userName: window.userData.name,
+          userEmail: window.userData.email
+        });
+
+        // Update user status in Firestore
+        await updateDoc(doc(db, "users", window.currentUser.uid), {
+          status: 'pending',
+          membership: 'premium',
+          lastPayment: new Date(),
+          paymentMethod: selectedPaymentType,
+          purchasedCourse: selectedCourse
+        });
+        
+        showAlert('Success', 'Thank you! Your payment status has been set to pending. Your account will be activated within 24 hours after verification.', 'check-circle');
+        closePaymentModal();
+        
+        // Refresh user data
+        const userDoc = await getDoc(doc(db, "users", window.currentUser.uid));
+        if (userDoc.exists()) {
+          window.userData = userDoc.data();
+          updateUI(window.userData);
+        }
+        
+      } catch (error) {
+        showAlert('Error', 'Error updating payment status: ' + error.message, 'exclamation-circle');
+      }
+    }
+    
+    async function logout() {
+      try {
+        await signOut(auth);
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userCountry');
+        window.location.href = 'index.html';
+      } catch (error) {
+        showAlert('Error', 'Error logging out: ' + error.message, 'exclamation-circle');
+      }
+    }
+    
+    // Custom Alert Functions
+    function showAlert(title, message, icon = 'check-circle') {
+      document.getElementById('alertTitle').textContent = title;
+      document.getElementById('alertMessage').textContent = message;
+      document.getElementById('alertIcon').className = `fas fa-${icon}`;
+      document.getElementById('customAlert').style.display = 'flex';
+    }
+    
+    function closeAlert() {
+      document.getElementById('customAlert').style.display = 'none';
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('paymentModal');
+      if (event.target === modal) {
+        closePaymentModal();
+      }
+      
+      const alertModal = document.getElementById('customAlert');
+      if (event.target === alertModal) {
+        closeAlert();
+      }
+    }
+
+    // Initialize user name from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+      const userName = localStorage.getItem('userName');
+      if (userName) {
+        document.getElementById('userName').textContent = userName;
+      }
+    });
+  </script>
+</body>
+</html>
