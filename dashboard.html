@@ -1067,9 +1067,414 @@
                 width: 23%;
             }
         }
+
+        /* DAI Floating Button */
+        .dai-floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary-light));
+            border: 3px solid var(--border);
+            color: var(--primary-dark);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            transition: var(--transition);
+            animation: float 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .dai-floating-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.4);
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+        }
+
+        .dai-floating-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .dai-floating-button:hover img {
+            transform: scale(1.1);
+        }
+
+        .dai-floating-button .dai-label {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .dai-floating-button:hover .dai-label {
+            opacity: 1;
+            top: -45px;
+        }
+
+        /* DAI Chatbot Modal */
+        .dai-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 12, 27, 0.95);
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+        }
+
+        .dai-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .dai-modal-content {
+            background: var(--primary);
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+        }
+
+        .dai-modal-header {
+            background: var(--primary-dark);
+            padding: 20px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dai-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--accent);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .dai-modal-title img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .dai-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .dai-close-btn:hover {
+            color: var(--accent);
+            background: var(--primary-light);
+        }
+
+        .dai-modal-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .dai-message {
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            max-width: 80%;
+            animation: messageSlideIn 0.3s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dai-message-bot {
+            background: var(--primary-light);
+            border-left: 4px solid var(--accent);
+            align-self: flex-start;
+        }
+
+        .dai-message-user {
+            background: rgba(100, 255, 218, 0.1);
+            border-right: 4px solid var(--success);
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .dai-message-text {
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .dai-message-time {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+
+        .dai-quick-questions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .dai-quick-question {
+            background: var(--primary-dark);
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .dai-quick-question:hover {
+            background: var(--primary-light);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .dai-modal-footer {
+            padding: 20px;
+            border-top: 2px solid var(--border);
+            background: var(--primary-dark);
+        }
+
+        .dai-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dai-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--primary-light);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .dai-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+        }
+
+        .dai-send-btn {
+            background: var(--accent);
+            color: var(--primary-dark);
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dai-send-btn:hover:not(:disabled) {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .dai-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .dai-loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent);
+            font-size: 14px;
+            padding: 15px;
+            background: var(--primary-light);
+            border-radius: var(--radius-sm);
+            margin: 10px 0;
+        }
+
+        .dai-loading-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .dai-loading-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: loadingDots 1.4s infinite ease-in-out both;
+        }
+
+        .dai-loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .dai-loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loadingDots {
+            0%, 80%, 100% { transform: scale(0); opacity: 0; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Podcast Icon Styling */
+        .download-icon.podcast-icon {
+            color: #FF6B6B;
+            position: relative;
+        }
+
+        .podcast-icon i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .podcast-icon i::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: podcastPulse 2s infinite;
+            z-index: 0;
+        }
+
+        @keyframes podcastPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.2; }
+        }
     </style>
 </head>
 <body>
+    <!-- DAI Floating Button -->
+    <div class="dai-floating-button" id="daiButton">
+        <div class="dai-label">ASK DAI</div>
+        <img src="https://raw.githubusercontent.com/danvil33/danvilacademy/refs/heads/main/file_0000000026d071f8ac7adc6e39b50e1b.png" alt="DAI Assistant">
+    </div>
+
+    <!-- DAI Chatbot Modal -->
+    <div class="dai-modal" id="daiModal">
+        <div class="dai-modal-content">
+            <div class="dai-modal-header">
+                <div class="dai-modal-title">
+                    <img src="https://raw.githubusercontent.com/danvil33/danvilacademy/refs/heads/main/file_0000000026d071f8ac7adc6e39b50e1b.png" alt="DAI Logo">
+                    DAI Assistant
+                </div>
+                <button class="dai-close-btn" id="daiCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="dai-modal-body" id="daiChatBody">
+                <div class="dai-message dai-message-bot">
+                    <div class="dai-message-text">
+                        👋 <strong>Hello! I'm DAI (Danvil AI Assistant)</strong><br><br>
+                        I'm trained specifically on <strong>Danvil Trading</strong> information. I can answer questions about:
+                        <br><br>
+                        • <strong>Alpha Access Program</strong> - Requirements, pricing, benefits<br>
+                        • <strong>Verification Process</strong> - Steps, timelines, requirements<br>
+                        • <strong>DANVIL EA (Robot)</strong> - Features, installation, usage<br>
+                        • <strong>Payment Methods</strong> - Crypto & Mobile payments<br>
+                        • <strong>Platform Details</strong> - Vantage MT5, trading setup<br>
+                        • <strong>Support & Contact</strong> - Getting help
+                        <br><br>
+                        What would you like to know?
+                    </div>
+                    <div class="dai-message-time">Just now</div>
+                    
+                    <div class="dai-quick-questions">
+                        <div class="dai-quick-question" data-question="What is Danvil Trading Alpha Access?">
+                            What is Alpha Access?
+                        </div>
+                        <div class="dai-quick-question" data-question="How does verification work?">
+                            Verification Process
+                        </div>
+                        <div class="dai-quick-question" data-question="Tell me about DANVIL EA">
+                            DANVIL EA Features
+                        </div>
+                        <div class="dai-quick-question" data-question="What payment methods do you accept?">
+                            Payment Methods
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dai-modal-footer">
+                <div class="dai-input-group">
+                    <input type="text" class="dai-input" id="daiInput" placeholder="Ask me anything about Danvil Trading..." maxlength="500">
+                    <button class="dai-send-btn" id="daiSendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Header with Hamburger Menu -->
     <div class="header">
         <div class="header-content">
@@ -1377,14 +1782,14 @@
 
                 <!-- Download Section -->
                 <div class="download-section" id="downloadSection">
-                    <div class="download-icon">
-                        <i class="fas fa-brain"></i>
+                    <div class="download-icon podcast-icon">
+                        <i class="fas fa-podcast"></i>
                     </div>
                     <div class="download-title">
-                        DANVIL EA (ROBOT)
+                        DANVIL EA (PODCAST EDITION)
                     </div>
                     <div class="download-description">
-                        Advanced trading algorithm • Fully automated • Risk management included
+                        Advanced trading algorithm with podcast insights • Fully automated • Risk management included
                     </div>
                     <button class="download-btn" id="downloadBtn" onclick="downloadEA()" disabled>
                         <i class="fas fa-download"></i>
@@ -2128,6 +2533,680 @@
                 color: '#e6f1ff'
             });
         }
+
+        // ==============================
+        // DAI AI ASSISTANT FUNCTIONALITY
+        // ==============================
+
+        // DAI Chatbot Knowledge Base - Extensively trained from this website
+        const daiKnowledgeBase = {
+            "danvil trading": {
+                answer: `**Danvil Trading** is a professional trading platform offering **Alpha Access** to advanced trading algorithms. We specialize in automated trading solutions with built-in risk management for serious traders.
+
+**Key Features:**
+• Alpha Access Program with lifetime benefits
+• DANVIL EA (Expert Advisor) for automated trading
+• Vantage MT5 broker integration
+• Professional risk management systems
+• 24/7 automated trading capabilities`,
+                keywords: ["platform", "professional", "trading", "alpha", "access", "company", "business"]
+            },
+            "alpha access": {
+                answer: `**Alpha Access** is our exclusive lifetime program that gives you:
+
+**Benefits:**
+• **Lifetime access** to DANVIL EA trading algorithm
+• **One-time payment** - no recurring fees
+• **Automated trading** with risk management
+• **Vantage MT5 compatibility**
+• **Full support** and updates
+
+**Requirements:**
+1. Vantage MT5 account
+2. Minimum $100 deposit in MT5
+3. One-time Alpha Access payment ($50 crypto or TZS 125,000 mobile)
+4. Verification approval`,
+                keywords: ["exclusive", "lifetime", "access", "program", "payment", "benefits", "premium"]
+            },
+            "verification": {
+                answer: `**Verification Process - Step by Step:**
+
+**Step 1:** Connect your **Vantage MT5 account** (minimum $100 deposit required)
+
+**Step 2:** Make payment via:
+• **Crypto:** $50 USDT on BEP-20 network
+• **Mobile:** TZS 125,000 via mobile money
+
+**Step 3:** Submit your transaction details (TXID for crypto, Transaction ID for mobile)
+
+**Step 4:** Our team reviews within **24-48 hours**
+
+**Step 5:** Once verified, download the **DANVIL EA** and start automated trading
+
+**Status Indicators:**
+• **Unverified** - Not started
+• **Submitted** - Application sent
+• **In Review** - Being processed
+• **Verified** - Approved, can download EA`,
+                keywords: ["process", "vantage", "mt5", "payment", "review", "download", "steps", "approval"]
+            },
+            "danvil ea": {
+                answer: `**DANVIL EA (Expert Advisor)** is our advanced trading algorithm for **MetaTrader 5**:
+
+**Features:**
+• **Fully automated trading** - No manual intervention needed
+• **Risk management system** included
+• **Vantage MT5 broker** compatibility
+• **24/7 operation** when market conditions are met
+• **Lifetime updates** for Alpha Access members
+
+**Installation:**
+1. Download the **.ex5 file** after verification
+2. Save to: **MT5 → MQL5 → Experts** folder
+3. Restart MT5 platform
+4. Enable **"Allow Algo Trading"** in settings
+5. Drag and drop EA to your chart
+
+**Requirements:** Vantage MT5 account with minimum $100 deposit`,
+                keywords: ["algorithm", "expert advisor", "mt5", "automated", "trading", "robot", "software", "bot"]
+            },
+            "payment methods": {
+                answer: `**We accept two payment methods:**
+
+**1. Crypto Payment:**
+• **Amount:** $50
+• **Currency:** USDT
+• **Network:** BEP-20
+• **Address:** 0xe7c892a82966801abc43f188f9eae6d204d4a555
+• **Submit:** Transaction hash (TXID)
+
+**2. Mobile Payment:**
+• **Amount:** TZS 125,000
+• **Recipient:** David Julius Ginane
+• **Mobile:** 0743 470 389
+• **Submit:** Transaction ID
+
+**Both are one-time payments for lifetime Alpha Access.**`,
+                keywords: ["crypto", "usdt", "mobile", "money", "payment", "options", "methods", "ways"]
+            },
+            "vantage mt5": {
+                answer: `**Vantage MT5 Requirements:**
+
+**Why Vantage?**
+• Our official supported broker
+• Compatible with DANVIL EA
+• Reliable execution
+• Professional platform
+
+**Requirements:**
+• **Must use Vantage MT5** (no other brokers)
+• **Minimum $100 deposit** required
+• **Account number** for verification
+• **Live trading account** (not demo)
+
+**How to get started:**
+1. Open Vantage MT5 account
+2. Deposit minimum $100
+3. Provide account number for verification
+4. Complete Alpha Access payment
+5. Get verified and start automated trading`,
+                keywords: ["broker", "required", "mt5", "account", "minimum", "deposit", "vantage", "platform"]
+            },
+            "crypto payment": {
+                answer: `**Crypto Payment Details:**
+
+**Payment Information:**
+• **Amount:** $50
+• **Currency:** USDT (Tether)
+• **Network:** BEP-20 (Binance Smart Chain)
+• **Address:** 0xe7c892a82966801abc43f188f9eae6d204d4a555
+
+**Steps:**
+1. Send $50 worth of USDT to the BEP-20 address above
+2. **Important:** Use BEP-20 network only
+3. Get your **transaction hash (TXID)** from your wallet
+4. Submit the TXID in the verification form
+5. Wait for verification (24-48 hours)
+
+**Note:** Always double-check the address and network before sending.`,
+                keywords: ["usdt", "bep20", "address", "transaction", "hash", "txid", "cryptocurrency", "bitcoin"]
+            },
+            "mobile payment": {
+                answer: `**Mobile Payment Details:**
+
+**Payment Information:**
+• **Amount:** TZS 125,000
+• **Recipient:** David Julius Ginane
+• **Mobile Number:** 0743 470 389
+• **Network:** Any Tanzanian mobile money
+
+**Steps:**
+1. Send TZS 125,000 to **0743 470 389**
+2. Get your **Transaction ID** from mobile money receipt
+3. Submit the Transaction ID in verification form
+4. Wait for verification (24-48 hours)
+
+**Note:** 
+• Available for all Tanzanian mobile networks
+• Include your name in reference if possible
+• Keep transaction receipt for reference`,
+                keywords: ["tzs", "mobile", "money", "transaction", "id", "tanzania", "mpesa", "tigo", "airtel"]
+            },
+            "download": {
+                answer: `**Download & Installation Guide:**
+
+**After verification approval:**
+
+**Download Steps:**
+1. Click the **"Download EA (.ex5)"** button
+2. Save the file to your computer
+3. **Location:** Save to MT5's Experts folder
+
+**Installation Steps:**
+1. **Navigate to:** MT5 → MQL5 → Experts folder
+2. **Copy** the DANVIL_EA.ex5 file to this folder
+3. **Restart** MT5 platform completely
+4. **Enable** "Allow Algo Trading" in Tools → Options → Expert Advisors
+5. **Drag and drop** the EA from Navigator panel to your chart
+6. **Configure** settings as needed
+
+**Support:** Email support@danviltrading.com if you need help.`,
+                keywords: ["download", "install", "mt5", "experts", "folder", "installation", "setup", "configure"]
+            },
+            "support": {
+                answer: `**Support & Contact Information:**
+
+**Email Support:**
+• **Email:** support@danviltrading.com
+• **Response Time:** Typically within 24 hours
+• **Priority:** Alpha Access members get priority support
+
+**What to include in support requests:**
+1. Your **Vantage MT5 account number**
+2. **Transaction details** (payment proof)
+3. **Clear description** of the issue
+4. **Screenshots** if applicable
+
+**Common Support Topics:**
+• Verification status inquiries
+• Download/installation help
+• Payment confirmation
+• Technical issues with EA
+• Account-related questions`,
+                keywords: ["help", "contact", "email", "issue", "problem", "assistance", "support", "questions"]
+            },
+            "requirements": {
+                answer: `**Complete Requirements List:**
+
+**Mandatory Requirements:**
+1. **Vantage MT5 account** (must be Vantage broker)
+2. **Minimum $100 deposit** in MT5 account
+3. **Alpha Access payment** ($50 crypto or TZS 125,000 mobile)
+4. **Valid transaction proof** (TXID or Transaction ID)
+5. **Basic understanding** of MT5 platform
+
+**Technical Requirements:**
+• MetaTrader 5 platform installed
+• Stable internet connection
+• Computer running Windows (recommended)
+• Vantage MT5 live account (not demo)
+
+**Verification Requirements:**
+• Complete all verification steps
+• Provide accurate information
+• Wait for review (24-48 hours)
+• No previous verification rejections`,
+                keywords: ["needed", "prerequisites", "minimum", "account", "deposit", "technical", "needs", "must"]
+            },
+            "features": {
+                answer: `**DANVIL EA Features:**
+
+**Core Features:**
+• **Fully automated trading** - No manual intervention
+• **Advanced risk management** - Protects your capital
+• **24/7 operation** - Trades when conditions are right
+• **Vantage MT5 optimized** - Specifically designed for Vantage
+• **Lifetime updates** - Continuous improvement for Alpha members
+
+**Technical Features:**
+• **Expert Advisor** for MetaTrader 5
+• **.ex5 file format** - Standard MT5 EA format
+• **Customizable settings** - Adjust to your risk tolerance
+• **Performance monitoring** - Track trading results
+• **Multi-currency support** - Various trading pairs
+
+**Benefits:**
+• **Save time** - No need to monitor markets constantly
+• **Emotion-free trading** - Removes emotional decisions
+• **Consistent strategy** - Follows predefined rules
+• **Professional grade** - Institutional-level algorithm`,
+                keywords: ["automated", "risk", "management", "lifetime", "updates", "performance", "benefits", "advantages"]
+            },
+            "price": {
+                answer: `**Pricing Information:**
+
+**Alpha Access Pricing:**
+• **Crypto:** $50 (one-time payment)
+• **Mobile:** TZS 125,000 (one-time payment)
+
+**What you get:**
+• **Lifetime access** to DANVIL EA
+• **No recurring fees** - Pay once, use forever
+• **All future updates** included
+• **Priority support** access
+• **Full feature access**
+
+**Payment Comparison:**
+• **$50 Crypto** = **TZS 125,000 Mobile**
+• Same benefits for both payment methods
+• Choose what's convenient for you
+
+**Note:** This is for Alpha Access only. You still need minimum $100 deposit in your Vantage MT5 account for trading.`,
+                keywords: ["cost", "price", "payment", "amount", "fee", "pricing", "how much", "expensive"]
+            },
+            "time": {
+                answer: `**Timelines & Processing Times:**
+
+**Verification Process:**
+• **Submission:** Immediate (after form submission)
+• **Review:** 24-48 hours typically
+• **Approval:** Once verified, immediate access
+
+**Trading Operation:**
+• **DANVIL EA:** Operates 24/7 when market conditions are met
+• **Markets:** Follows market opening hours
+• **Execution:** Real-time when triggered
+
+**Support Response:**
+• **Email Support:** Within 24 hours
+• **Urgent Issues:** Prioritized for Alpha members
+• **Technical Help:** Typically same-day response
+
+**Download & Setup:**
+• **Download:** Immediate after verification
+• **Setup:** 10-15 minutes for installation
+• **Trading:** Can start immediately after setup`,
+                keywords: ["duration", "how long", "processing", "time", "wait", "when", "schedule", "timeline"]
+            },
+            "security": {
+                answer: `**Security & Safety:**
+
+**Platform Security:**
+• **Firebase Authentication** - Secure user login
+• **Data Encryption** - All sensitive data protected
+• **Secure Payments** - Verified payment methods
+• **Regular Security Audits** - Ongoing protection
+
+**Account Security:**
+• **Email verification** required
+• **Secure sessions** - Automatic logout protection
+• **Data privacy** - Your information protected
+• **No sharing** - We never share your data
+
+**Trading Security:**
+• **Risk management** built into EA
+• **Stop losses** automatically applied
+• **Capital protection** features
+• **Secure MT5 connection** - Encrypted platform access
+
+**Download Security:**
+• **Verified downloads only** - No unauthorized access
+• **Malware-free** - Clean, safe executable
+• **Source verified** - Direct from our GitHub`,
+                keywords: ["safe", "secure", "protection", "privacy", "encryption", "trust", "reliable", "protected"]
+            },
+            "refund": {
+                answer: `**Refund & Policy Information:**
+
+**Alpha Access Policy:**
+• **One-time payment** - Lifetime access
+• **Digital product** - Immediate access upon verification
+• **Verification required** - Must complete verification process
+
+**Important Notes:**
+• **No refunds** after verification approval
+• **Payment verification** required before any processing
+• **Ensure eligibility** before payment
+• **Read requirements** carefully
+
+**Before Payment:**
+1. Confirm you have **Vantage MT5 account**
+2. Ensure **minimum $100 deposit** in MT5
+3. Understand **verification process**
+4. Read **all requirements** carefully
+
+**Contact support@danviltrading.com** for any policy questions.`,
+                keywords: ["refund", "policy", "return", "money back", "guarantee", "warranty", "terms"]
+            },
+            "hello": {
+                answer: `👋 **Hello! I'm DAI - Your Danvil AI Assistant!**
+
+I'm specifically trained on **Danvil Trading** information. I can help you with:
+
+**Popular Topics:**
+• Alpha Access program details
+• Verification process steps
+• DANVIL EA features & installation
+• Payment methods (crypto & mobile)
+• Vantage MT5 requirements
+• Support & contact information
+
+**Quick Tips:**
+1. Need verification help? Ask about "verification process"
+2. Want to know about the EA? Ask about "DANVIL EA features"
+3. Payment questions? Ask about "payment methods"
+4. Technical issues? Ask about "support"
+
+What would you like to know about Danvil Trading today?`,
+                keywords: ["hi", "hey", "hello", "greetings", "welcome", "start", "help", "assistance"]
+            },
+            "thank": {
+                answer: `You're very welcome! 😊
+
+I'm here to help you with all things **Danvil Trading**. Remember:
+
+**If you need further assistance:**
+• Use the **quick questions** below for common topics
+• Type your specific questions in the chat
+• Contact **support@danviltrading.com** for account-specific help
+
+**Pro Tip:** You can ask me about:
+• "How to download the EA"
+• "Verification requirements"
+• "Payment details"
+• "MT5 setup instructions"
+
+Happy trading! 🚀`,
+                keywords: ["thanks", "thank you", "appreciate", "grateful", "welcome", "okay", "done"]
+            }
+        };
+
+        // DAI Chatbot Elements
+        const daiButton = document.getElementById('daiButton');
+        const daiModal = document.getElementById('daiModal');
+        const daiCloseBtn = document.getElementById('daiCloseBtn');
+        const daiChatBody = document.getElementById('daiChatBody');
+        const daiInput = document.getElementById('daiInput');
+        const daiSendBtn = document.getElementById('daiSendBtn');
+
+        // Open DAI modal
+        daiButton.addEventListener('click', () => {
+            daiModal.classList.add('active');
+            daiInput.focus();
+        });
+
+        // Close DAI modal
+        daiCloseBtn.addEventListener('click', () => {
+            daiModal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside
+        daiModal.addEventListener('click', (e) => {
+            if (e.target === daiModal) {
+                daiModal.classList.remove('active');
+            }
+        });
+
+        // Send message on button click
+        daiSendBtn.addEventListener('click', sendMessage);
+
+        // Send message on Enter key
+        daiInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && daiInput.value.trim()) {
+                sendMessage();
+            }
+        });
+
+        // Quick question buttons (dynamic)
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dai-quick-question')) {
+                const question = e.target.getAttribute('data-question');
+                daiInput.value = question;
+                sendMessage();
+            }
+        });
+
+        // Send message function
+        function sendMessage() {
+            const message = daiInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            daiInput.value = '';
+            daiSendBtn.disabled = true;
+
+            // Show loading
+            showLoadingIndicator();
+
+            // Get AI response (simulate delay for realism)
+            setTimeout(() => {
+                // Remove loading
+                removeLoadingIndicator();
+                
+                // Get AI response
+                const response = getAIResponse(message);
+                
+                // Add bot response
+                addMessage(response, 'bot');
+
+                // Add quick questions based on context
+                addQuickQuestions(message);
+                
+                // Re-enable send button
+                daiSendBtn.disabled = false;
+            }, 800);
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `dai-message dai-message-${sender}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="dai-message-text">${formatMessage(text)}</div>
+                <div class="dai-message-time">${timeString}</div>
+            `;
+            
+            daiChatBody.appendChild(messageDiv);
+            daiChatBody.scrollTop = daiChatBody.scrollHeight;
+        }
+
+        // Format message with markdown-like syntax
+        function formatMessage(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>')
+                .replace(/\•/g, '•')
+                .replace(/\d\. /g, '<br>$&')
+                .replace(/^(\d\. )/gm, '<br>$1');
+        }
+
+        // Show loading indicator
+        function showLoadingIndicator() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'dai-loading';
+            loadingDiv.id = 'daiLoading';
+            loadingDiv.innerHTML = `
+                <div class="dai-loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>DAI is thinking...</span>
+            `;
+            daiChatBody.appendChild(loadingDiv);
+            daiChatBody.scrollTop = daiChatBody.scrollHeight;
+        }
+
+        // Remove loading indicator
+        function removeLoadingIndicator() {
+            const loadingDiv = document.getElementById('daiLoading');
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+
+        // Get AI response based on knowledge base
+        function getAIResponse(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Check for greetings
+            if (lowerQuery.includes('hello') || lowerQuery.includes('hi') || lowerQuery.includes('hey')) {
+                return daiKnowledgeBase['hello'].answer;
+            }
+            
+            // Check for thanks
+            if (lowerQuery.includes('thank')) {
+                return daiKnowledgeBase['thank'].answer;
+            }
+            
+            // Check for exact matches in knowledge base
+            for (const [key, data] of Object.entries(daiKnowledgeBase)) {
+                if (lowerQuery.includes(key)) {
+                    return data.answer;
+                }
+            }
+
+            // Check for keyword matches (weighted)
+            let bestMatch = null;
+            let bestMatchScore = 0;
+            
+            for (const [key, data] of Object.entries(daiKnowledgeBase)) {
+                let score = 0;
+                
+                // Check each keyword
+                for (const keyword of data.keywords) {
+                    if (lowerQuery.includes(keyword)) {
+                        score += 1;
+                    }
+                }
+                
+                // If this entry has a higher score than current best, update
+                if (score > bestMatchScore) {
+                    bestMatchScore = score;
+                    bestMatch = key;
+                }
+            }
+            
+            // If we found a good match, return it
+            if (bestMatchScore >= 2) { // Require at least 2 keyword matches
+                return daiKnowledgeBase[bestMatch].answer;
+            }
+            
+            // Check for common variations
+            if (lowerQuery.includes('how much') || lowerQuery.includes('cost') || lowerQuery.includes('price')) {
+                return daiKnowledgeBase['price'].answer;
+            }
+            
+            if (lowerQuery.includes('how long') || lowerQuery.includes('time') || lowerQuery.includes('wait')) {
+                return daiKnowledgeBase['time'].answer;
+            }
+            
+            if (lowerQuery.includes('safe') || lowerQuery.includes('secure') || lowerQuery.includes('trust')) {
+                return daiKnowledgeBase['security'].answer;
+            }
+            
+            if (lowerQuery.includes('refund') || lowerQuery.includes('money back') || lowerQuery.includes('return')) {
+                return daiKnowledgeBase['refund'].answer;
+            }
+
+            // Fallback response
+            return `I'm specifically trained on **Danvil Trading** information. I can help you with:
+
+**Try asking about:**
+• "What is Alpha Access?" - Program details
+• "How does verification work?" - Step-by-step process
+• "Tell me about DANVIL EA" - Features and installation
+• "What payment methods do you accept?" - Crypto & mobile options
+• "Vantage MT5 requirements" - Broker requirements
+
+**Or be more specific with your question about Danvil Trading.**`;
+        }
+
+        // Add quick questions based on context
+        function addQuickQuestions(context) {
+            const lowerContext = context.toLowerCase();
+            let relevantQuestions = [];
+
+            // Determine context and set relevant questions
+            if (lowerContext.includes('payment') || lowerContext.includes('money') || lowerContext.includes('cost') || lowerContext.includes('price')) {
+                relevantQuestions = [
+                    "Crypto payment details?",
+                    "Mobile payment instructions?",
+                    "Payment verification time?"
+                ];
+            } else if (lowerContext.includes('verif') || lowerContext.includes('approv') || lowerContext.includes('submit')) {
+                relevantQuestions = [
+                    "Verification requirements?",
+                    "How long does verification take?",
+                    "What if verification fails?"
+                ];
+            } else if (lowerContext.includes('ea') || lowerContext.includes('robot') || lowerContext.includes('algorithm') || lowerContext.includes('download')) {
+                relevantQuestions = [
+                    "How to install DANVIL EA?",
+                    "EA system requirements?",
+                    "EA features and benefits?"
+                ];
+            } else if (lowerContext.includes('vantage') || lowerContext.includes('broker') || lowerContext.includes('mt5')) {
+                relevantQuestions = [
+                    "Why Vantage broker?",
+                    "Minimum deposit required?",
+                    "How to open Vantage account?"
+                ];
+            } else if (lowerContext.includes('support') || lowerContext.includes('help') || lowerContext.includes('contact')) {
+                relevantQuestions = [
+                    "Support email address?",
+                    "Response time for support?",
+                    "What to include in support request?"
+                ];
+            } else {
+                // Default questions based on most common queries
+                relevantQuestions = [
+                    "What is Alpha Access?",
+                    "How does verification work?",
+                    "Tell me about DANVIL EA",
+                    "Payment methods available?"
+                ];
+            }
+
+            // Remove existing quick questions
+            const existingQuickQuestions = daiChatBody.querySelectorAll('.dai-quick-questions');
+            existingQuickQuestions.forEach(el => el.remove());
+
+            // Add new quick questions to the last bot message
+            const lastBotMessage = daiChatBody.querySelector('.dai-message-bot:last-child');
+            if (lastBotMessage) {
+                const quickQuestionsDiv = document.createElement('div');
+                quickQuestionsDiv.className = 'dai-quick-questions';
+                
+                relevantQuestions.forEach(question => {
+                    const button = document.createElement('div');
+                    button.className = 'dai-quick-question';
+                    button.textContent = question;
+                    button.setAttribute('data-question', question);
+                    quickQuestionsDiv.appendChild(button);
+                });
+                
+                lastBotMessage.appendChild(quickQuestionsDiv);
+                daiChatBody.scrollTop = daiChatBody.scrollHeight;
+            }
+        }
+
+        // Initialize DAI with welcome message if empty
+        function initializeDAI() {
+            const existingMessages = daiChatBody.querySelectorAll('.dai-message');
+            if (existingMessages.length === 0) {
+                // Add welcome message
+                addMessage(daiKnowledgeBase['hello'].answer, 'bot');
+            }
+        }
+
+        // Initialize DAI when page loads
+        document.addEventListener('DOMContentLoaded', initializeDAI);
     </script>
 </body>
 </html>
