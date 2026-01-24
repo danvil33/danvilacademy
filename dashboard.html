@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danvil Trading | Alpha Access</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-firestore-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary-dark: #0a192f;
+            --primary: #112240;
+            --primary-light: #233554;
+            --accent: #64ffda;
+            --accent-dark: #52d4b2;
+            --text-primary: #e6f1ff;
+            --text-secondary: #8892b0;
+            --text-tertiary: #a8b2d1;
+            --surface: #112240;
+            --border: #233554;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+            --shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            --error: #ff6b6b;
+            --success: #64ffda;
+            --warning: #ffaa00;
+            --crypto: #00ff88;
+            --mobile: #0066ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-secondary);
+            min-height: 100vh;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        /* Header with Hamburger Menu */
+        .header {
+            background: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+        }
+
+        .logo-tagline {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            margin-left: 10px;
+            font-weight: 400;
+        }
+
+        .hamburger-menu {
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            z-index: 1002;
+        }
+
+        .hamburger-menu:hover {
+            background: var(--primary-light);
+            color: var(--accent);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: var(--primary);
+            border-left: 1px solid var(--border);
+            z-index: 1001;
+            transition: var(--transition);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-header h3 {
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-menu:hover {
+            color: var(--accent);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: var(--accent);
+        }
+
+        .menu-item.active {
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--accent);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 10px 0;
+        }
+
+        .user-profile-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            background: var(--primary-light);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .user-info-menu h4 {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        /* Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(2, 12, 27, 0.8);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        .menu-overlay.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            padding: 20px 30px;
+            background: rgba(10, 25, 47, 0.5);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar-status {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .user-details h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Verification Status with Animation */
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .status-verified {
+            background: var(--success);
+            color: var(--primary-dark);
+            animation: badgeSuccess 2s infinite;
+        }
+
+        @keyframes badgeSuccess {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .status-pending {
+            background: var(--warning);
+            color: var(--primary-dark);
+            animation: badgePending 1.5s infinite;
+        }
+
+        @keyframes badgePending {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .status-submitted {
+            background: var(--mobile);
+            color: var(--text-primary);
+            animation: badgeSubmitted 2s infinite;
+        }
+
+        @keyframes badgeSubmitted {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .status-unverified {
+            background: var(--error);
+            color: var(--text-primary);
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 25px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px solid var(--error);
+            color: var(--error);
+        }
+
+        .alert-warning {
+            background: rgba(255, 170, 0, 0.1);
+            border: 2px solid var(--warning);
+            color: var(--warning);
+        }
+
+        /* Status Timeline */
+        .status-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0 30px;
+            position: relative;
+        }
+
+        .status-timeline::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .status-point {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 25%;
+        }
+
+        .status-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--border);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+
+        .status-point.active .status-dot {
+            background: var(--accent);
+            color: var(--primary-dark);
+            animation: dotActive 1.5s infinite;
+        }
+
+        @keyframes dotActive {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .status-point.completed .status-dot {
+            background: var(--success);
+            color: var(--primary-dark);
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .status-point.active .status-label {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .status-point.completed .status-label {
+            color: var(--success);
+        }
+
+        /* Payment Type Selection */
+        .payment-type-selection {
+            margin-bottom: 30px;
+        }
+
+        .payment-type-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .payment-types {
+            display: flex;
+            gap: 15px;
+        }
+
+        .payment-type {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(10, 25, 47, 0.3);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-type:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .payment-type.active {
+            border-color: var(--accent);
+            background: rgba(100, 255, 218, 0.1);
+            animation: typeActive 0.3s ease-out;
+        }
+
+        @keyframes typeActive {
+            from { transform: scale(0.95); opacity: 0.5; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .payment-type.crypto .type-icon {
+            color: var(--crypto);
+        }
+
+        .payment-type.mobile .type-icon {
+            color: var(--mobile);
+        }
+
+        .type-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .type-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            margin-bottom: 5px;
+        }
+
+        .payment-type.active .type-name {
+            color: var(--text-primary);
+        }
+
+        .type-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Payment Forms */
+        .payment-form {
+            display: none;
+        }
+
+        .payment-form.active {
+            display: block;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Verification Steps */
+        .verification-steps {
+            margin-bottom: 30px;
+        }
+
+        .step {
+            background: rgba(10, 25, 47, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step.completed {
+            border-color: var(--success);
+            background: rgba(100, 255, 218, 0.05);
+        }
+
+        .step.pending {
+            border-color: var(--warning);
+            background: rgba(255, 170, 0, 0.05);
+        }
+
+        .step:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            animation: stepCompleted 0.5s ease-out;
+        }
+
+        @keyframes stepCompleted {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .step.pending .step-number {
+            background: var(--warning);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .step-subtitle {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(10, 25, 47, 0.8);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            color: var(--text-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+        }
+
+        .form-note {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+            line-height: 1.5;
+            padding: 12px;
+            background: rgba(10, 25, 47, 0.3);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Payment Info */
+        .payment-info {
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            margin-bottom: 25px;
+            color: white;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .payment-amount {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .payment-label {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-bottom: 20px;
+        }
+
+        .payment-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            color: var(--text-primary);
+        }
+
+        .detail-value.mobile-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--mobile);
+        }
+
+        /* Crypto Address */
+        .crypto-address {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .crypto-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .crypto-value {
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--crypto);
+            color: var(--primary-dark);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #00cc6d;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.mobile {
+            background: var(--mobile);
+        }
+
+        .copy-btn.mobile:hover {
+            background: #0052d4;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .download-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--accent);
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .download-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .download-description {
+            font-size: 14px;
+            margin-bottom: 25px;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            background: var(--accent);
+            color: var(--primary-dark);
+            border: none;
+            padding: 18px 40px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 220px;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Verification Process Animation */
+        .verification-process {
+            display: none;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .verification-process.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .process-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .process-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+
+        .process-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--border);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+
+        .process-step.active .process-dot {
+            background: var(--accent);
+            color: var(--primary-dark);
+            animation: processActive 1s infinite;
+        }
+
+        @keyframes processActive {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .process-step.completed .process-dot {
+            background: var(--success);
+            color: var(--primary-dark);
+        }
+
+        .process-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .process-step.active .process-label {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .process-step.completed .process-label {
+            color: var(--success);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 1s ease-in-out;
+            animation: progressLoad 2s infinite alternate;
+        }
+
+        @keyframes progressLoad {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .payment-types {
+                flex-direction: column;
+            }
+            
+            .mobile-menu {
+                width: 280px;
+            }
+            
+            .payment-amount {
+                font-size: 36px;
+            }
+            
+            .status-timeline {
+                margin: 15px 0 25px;
+            }
+            
+            .status-point {
+                width: 23%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Hamburger Menu -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://raw.githubusercontent.com/danvil33/danvilacademy/refs/heads/main/file_0000000026d071f8ac7adc6e39b50e1b.png" alt="Danvil Trading Logo">
+                DANVIL TRADING
+                <span class="logo-tagline">Alpha Access</span>
+            </div>
+            <button class="hamburger-menu" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="menu-header">
+            <h3>Navigation</h3>
+            <button class="close-menu" id="closeMenuBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="user-profile-menu">
+            <div class="user-avatar" id="menuUserAvatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info-menu">
+                <h4 id="menuUserName">Loading...</h4>
+            </div>
+        </div>
+        
+        <div class="menu-divider"></div>
+        
+        <a href="dashboard.html" class="menu-item">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+        
+        <a href="#" class="menu-item active">
+            <i class="fas fa-star"></i>
+            <span>Alpha Access</span>
+        </a>
+        
+        <a href="verification.html" class="menu-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Verification</span>
+        </a>
+        
+        <div class="menu-divider"></div>
+        
+        <a href="payment-history.html" class="menu-item">
+            <i class="fas fa-history"></i>
+            <span>Payment History</span>
+        </a>
+        
+        <a href="settings.html" class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+        
+        <a href="#" class="menu-item" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="user-info">
+                    <div class="user-avatar-status" id="userAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Loading...</h3>
+                    </div>
+                </div>
+                <div class="verification-status">
+                    <div class="status-badge" id="verificationBadge">
+                        <i class="fas fa-clock"></i>
+                        <span>Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Alert -->
+                <div class="alert" id="alertMessage"></div>
+
+                <!-- Status Timeline -->
+                <div class="status-timeline" id="statusTimeline">
+                    <div class="status-point" id="statusUnverified">
+                        <div class="status-dot">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="status-label">Unverified</div>
+                    </div>
+                    <div class="status-point" id="statusSubmitted">
+                        <div class="status-dot">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <div class="status-label">Submitted</div>
+                    </div>
+                    <div class="status-point" id="statusPending">
+                        <div class="status-dot">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="status-label">In Review</div>
+                    </div>
+                    <div class="status-point" id="statusVerified">
+                        <div class="status-dot">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="status-label">Verified</div>
+                    </div>
+                </div>
+
+                <!-- Verification Process Animation -->
+                <div class="verification-process" id="verificationProcess">
+                    <div class="process-title">Verification in Progress</div>
+                    <div class="process-steps">
+                        <div class="process-step" id="processStep1">
+                            <div class="process-dot">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <div class="process-label">Submitted</div>
+                        </div>
+                        <div class="process-step" id="processStep2">
+                            <div class="process-dot">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="process-label">In Review</div>
+                        </div>
+                        <div class="process-step" id="processStep3">
+                            <div class="process-dot">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="process-label">Verified</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="verificationProgress"></div>
+                    </div>
+                </div>
+
+                <!-- Payment Type Selection -->
+                <div class="payment-type-selection" id="paymentTypeSelection">
+                    <div class="payment-type-title">Choose Payment Method</div>
+                    <div class="payment-types">
+                        <div class="payment-type crypto active" data-type="crypto">
+                            <div class="type-icon">
+                                <i class="fas fa-bitcoin"></i>
+                            </div>
+                            <div class="type-name">Crypto Payment</div>
+                            <div class="type-desc">Pay $50 in USDT</div>
+                        </div>
+                        <div class="payment-type mobile" data-type="mobile">
+                            <div class="type-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="type-name">Mobile Payment</div>
+                            <div class="type-desc">Pay TZS 125,000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crypto Payment Form -->
+                <div id="cryptoForm" class="payment-form active">
+                    <div class="verification-steps">
+                        <!-- Step 1: Broker Verification -->
+                        <div class="step" id="step1">
+                            <div class="step-header">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <div class="step-title">Broker Verification</div>
+                                    <div class="step-subtitle">Connect your Vantage MT5 account</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mt5Account" class="form-label">Vantage MT5 Account Number</label>
+                                <input type="text" id="mt5Account" class="form-input" placeholder="Enter your Vantage MT5 account number">
+                                <div class="form-note">
+                                    <i class="fas fa-info-circle"></i> Must be Vantage broker only • Minimum $100 deposit required
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Payment -->
+                        <div class="step" id="step2">
+                            <div class="step-header">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <div class="step-title">Payment Verification</div>
+                                    <div class="step-subtitle">Pay $50 in USDT (BEP-20)</div>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-info">
+                                <div class="payment-amount">$50</div>
+                                <div class="payment-label">One-time payment • Lifetime access</div>
+                                
+                                <div class="crypto-address">
+                                    <div class="crypto-label">USDT BEP-20 Address</div>
+                                    <div class="crypto-value" id="cryptoAddress">0xe7c892a82966801abc43f188f9eae6d204d4a555</div>
+                                </div>
+                                
+                                <button class="copy-btn" onclick="copyCryptoAddress()">
+                                    <i class="fas fa-copy"></i>
+                                    Copy Address
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="paymentHash" class="form-label">Transaction Hash (TXID)</label>
+                                <input type="text" id="paymentHash" class="form-input" placeholder="Paste your USDT transaction hash">
+                                <div class="form-note">
+                                    <i class="fas fa-info-circle"></i> Find this in your wallet transaction history
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary" id="submitCryptoBtn" onclick="submitCryptoVerification()">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Submit for Verification</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Payment Form -->
+                <div id="mobileForm" class="payment-form">
+                    <div class="verification-steps">
+                        <!-- Step 1: Broker Verification -->
+                        <div class="step" id="step1Mobile">
+                            <div class="step-header">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <div class="step-title">Broker Verification</div>
+                                    <div class="step-subtitle">Connect your Vantage MT5 account</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mt5AccountMobile" class="form-label">Vantage MT5 Account Number</label>
+                                <input type="text" id="mt5AccountMobile" class="form-input" placeholder="Enter your Vantage MT5 account number">
+                                <div class="form-note">
+                                    <i class="fas fa-info-circle"></i> Must be Vantage broker only • Minimum $100 deposit required
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Mobile Payment -->
+                        <div class="step" id="step2Mobile">
+                            <div class="step-header">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <div class="step-title">Mobile Payment</div>
+                                    <div class="step-subtitle">Pay TZS 125,000 via Mobile Money</div>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-info">
+                                <div class="payment-amount">TZS 125,000</div>
+                                <div class="payment-label">One-time payment • Lifetime access</div>
+                                
+                                <div class="payment-details">
+                                    <div class="detail-label">Recipient Name</div>
+                                    <div class="detail-value">DAVID JULIUS GINANE</div>
+                                </div>
+                                
+                                <div class="payment-details">
+                                    <div class="detail-label">Mobile Number</div>
+                                    <div class="detail-value mobile-number">0743 470 389</div>
+                                </div>
+                                
+                                <button class="copy-btn mobile" onclick="copyMobileDetails()">
+                                    <i class="fas fa-copy"></i>
+                                    Copy Details
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="transactionId" class="form-label">Transaction ID</label>
+                                <input type="text" id="transactionId" class="form-input" placeholder="Enter your mobile payment transaction ID">
+                                <div class="form-note">
+                                    <i class="fas fa-info-circle"></i> Find this in your mobile money transaction history
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary" id="submitMobileBtn" onclick="submitMobileVerification()">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Submit for Verification</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Section -->
+                <div class="download-section" id="downloadSection">
+                    <div class="download-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="download-title">
+                        DANVIL EA (ROBOT)
+                    </div>
+                    <div class="download-description">
+                        Advanced trading algorithm • Fully automated • Risk management included
+                    </div>
+                    <button class="download-btn" id="downloadBtn" onclick="downloadEA()" disabled>
+                        <i class="fas fa-download"></i>
+                        <span>Download EA (.ex5)</span>
+                    </button>
+                    <div style="margin-top: 15px; font-size: 11px; color: var(--text-tertiary);">
+                        <i class="fas fa-shield-alt"></i> Secure download • Verified access only
+                    </div>
+                </div>
+
+                <!-- Support -->
+                <button class="btn btn-secondary" onclick="openSupport()">
+                    <i class="fas fa-headset"></i>
+                    <span>Contact Support</span>
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p><i class="fas fa-copyright"></i> 2024 DANVIL TRADING • ALPHA ACCESS</p>
+                <p style="margin-top: 5px; font-size: 0.75rem;">Professional Trading Platform</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBEjeRSyKbpEmbNk0SYLUFPp3lbgP9x3Ow",
+            authDomain: "volcanobxpl.firebaseapp.com",
+            projectId: "volcanobxpl",
+            storageBucket: "volcanobxpl.firebasestorage.app",
+            messagingSenderId: "742861205377",
+            appId: "1:742861205377:web:bbe8a42b78c90354a64280",
+            measurementId: "G-G1KWGHLZES"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let userData = null;
+        let userVerification = null;
+        let paymentType = 'crypto'; // Default payment type
+        let isVerificationInProgress = false;
+
+        // Auth State Listener
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            } else {
+                currentUser = user;
+                await loadUserData();
+                await loadVerificationData();
+                updateUI();
+            }
+        });
+
+        // Mobile Menu Functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        hamburgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            menuOverlay.classList.add('active');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        });
+
+        menuOverlay.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        });
+
+        // Logout Functionality
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Logout Failed',
+                    text: 'Error logging out: ' + error.message,
+                    confirmButtonColor: '#64ffda'
+                });
+            }
+        });
+
+        // Payment Type Selection
+        const paymentTypes = document.querySelectorAll('.payment-type');
+        paymentTypes.forEach(type => {
+            type.addEventListener('click', () => {
+                paymentTypes.forEach(t => t.classList.remove('active'));
+                type.classList.add('active');
+                paymentType = type.getAttribute('data-type');
+                
+                // Show/hide forms
+                document.getElementById('cryptoForm').classList.remove('active');
+                document.getElementById('mobileForm').classList.remove('active');
+                document.getElementById(`${paymentType}Form`).classList.add('active');
+                
+                // Update verification steps based on payment type
+                updateVerificationSteps();
+            });
+        });
+
+        // Load User Data
+        async function loadUserData() {
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists) {
+                    userData = userDoc.data();
+                    
+                    // Update UI - Only name, no email
+                    document.getElementById('userName').textContent = userData.name || 'Trader';
+                    
+                    // Update menu - Only name, no email
+                    document.getElementById('menuUserName').textContent = userData.name || 'Trader';
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error loading user data',
+                    confirmButtonColor: '#64ffda'
+                });
+            }
+        }
+
+        // Load Verification Data
+        async function loadVerificationData() {
+            try {
+                const verificationDoc = await db.collection('verifications').doc(currentUser.uid).get();
+                if (verificationDoc.exists) {
+                    userVerification = verificationDoc.data();
+                }
+            } catch (error) {
+                console.error('Error loading verification data:', error);
+            }
+        }
+
+        // Update UI based on verification status
+        function updateUI() {
+            if (!userData) return;
+
+            const verificationBadge = document.getElementById('verificationBadge');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const paymentTypeSelection = document.getElementById('paymentTypeSelection');
+            const verificationProcess = document.getElementById('verificationProcess');
+            const statusPoints = document.querySelectorAll('.status-point');
+            const processSteps = document.querySelectorAll('.process-step');
+
+            // Reset all status points and process steps
+            statusPoints.forEach(point => {
+                point.classList.remove('active', 'completed');
+            });
+            
+            processSteps.forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+
+            // Hide verification process by default
+            verificationProcess.classList.remove('active');
+
+            if (userVerification) {
+                if (userVerification.status === 'verified') {
+                    verificationBadge.innerHTML = '<i class="fas fa-check-circle"></i><span>VERIFIED</span>';
+                    verificationBadge.className = 'status-badge status-verified';
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i><span>DOWNLOAD EA (.ex5)</span>';
+                    
+                    // Hide verification forms
+                    paymentTypeSelection.style.display = 'none';
+                    document.getElementById('cryptoForm').style.display = 'none';
+                    document.getElementById('mobileForm').style.display = 'none';
+                    
+                    // Update status timeline
+                    statusPoints.forEach(point => point.classList.add('completed'));
+                    document.getElementById('statusVerified').classList.add('active');
+                    
+                    // Show success alert
+                    showAlert('✅ Account verified! You can now download the DANVIL EA.', 'success');
+                    
+                } else if (userVerification.status === 'pending') {
+                    verificationBadge.innerHTML = '<i class="fas fa-clock"></i><span>IN REVIEW</span>';
+                    verificationBadge.className = 'status-badge status-pending';
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-lock"></i><span>AWAITING VERIFICATION</span>';
+                    
+                    // Show verification process animation
+                    verificationProcess.classList.add('active');
+                    processSteps[0].classList.add('completed'); // Submitted
+                    processSteps[1].classList.add('active'); // In Review
+                    
+                    // Update status timeline
+                    document.getElementById('statusUnverified').classList.add('completed');
+                    document.getElementById('statusSubmitted').classList.add('completed');
+                    document.getElementById('statusPending').classList.add('active');
+                    
+                    showAlert('🕒 Verification is being reviewed. Check back soon.', 'warning');
+                    
+                } else if (userVerification.status === 'submitted') {
+                    verificationBadge.innerHTML = '<i class="fas fa-file-upload"></i><span>SUBMITTED</span>';
+                    verificationBadge.className = 'status-badge status-submitted';
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-lock"></i><span>SUBMITTED FOR REVIEW</span>';
+                    
+                    // Show verification process animation
+                    verificationProcess.classList.add('active');
+                    processSteps[0].classList.add('active'); // Submitted
+                    
+                    // Update status timeline
+                    document.getElementById('statusUnverified').classList.add('completed');
+                    document.getElementById('statusSubmitted').classList.add('active');
+                    
+                    showAlert('📤 Verification submitted successfully!', 'success');
+                    
+                } else if (userVerification.status === 'rejected') {
+                    verificationBadge.innerHTML = '<i class="fas fa-times-circle"></i><span>REJECTED</span>';
+                    verificationBadge.className = 'status-badge status-unverified';
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-lock"></i><span>VERIFICATION FAILED</span>';
+                    
+                    document.getElementById('statusUnverified').classList.add('active');
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Verification Rejected',
+                        text: 'Please resubmit with correct details.',
+                        confirmButtonColor: '#64ffda'
+                    });
+                }
+            } else {
+                verificationBadge.innerHTML = '<i class="fas fa-times-circle"></i><span>UNVERIFIED</span>';
+                verificationBadge.className = 'status-badge status-unverified';
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-lock"></i><span>VERIFICATION REQUIRED</span>';
+                
+                document.getElementById('statusUnverified').classList.add('active');
+            }
+            
+            // Mark steps as completed/pending
+            updateVerificationSteps();
+        }
+
+        // Update verification steps based on status
+        function updateVerificationSteps() {
+            const steps = document.querySelectorAll('.step');
+            
+            if (userVerification) {
+                if (userVerification.status === 'verified') {
+                    steps.forEach(step => {
+                        step.classList.add('completed');
+                        step.classList.remove('pending');
+                    });
+                } else if (userVerification.status === 'pending' || userVerification.status === 'submitted') {
+                    steps.forEach(step => {
+                        step.classList.add('pending');
+                        step.classList.remove('completed');
+                    });
+                } else {
+                    steps.forEach(step => {
+                        step.classList.remove('completed', 'pending');
+                    });
+                }
+            } else {
+                steps.forEach(step => {
+                    step.classList.remove('completed', 'pending');
+                });
+            }
+        }
+
+        // Copy Crypto Address
+        function copyCryptoAddress() {
+            const address = document.getElementById('cryptoAddress').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copied!',
+                    text: 'USDT address copied to clipboard!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+            });
+        }
+
+        // Copy Mobile Details
+        function copyMobileDetails() {
+            const details = `DAVID JULIUS GINANE\nMobile: 0743470389\nAmount: TZS 125,000`;
+            navigator.clipboard.writeText(details).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copied!',
+                    text: 'Mobile details copied to clipboard!',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+            });
+        }
+
+        // Submit Crypto Verification
+        async function submitCryptoVerification() {
+            const mt5Account = document.getElementById('mt5Account').value.trim();
+            const paymentHash = document.getElementById('paymentHash').value.trim();
+            const submitBtn = document.getElementById('submitCryptoBtn');
+
+            // Validation
+            if (!mt5Account || mt5Account.length < 5) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please enter your Vantage MT5 account number',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+                return;
+            }
+
+            if (!paymentHash || paymentHash.length < 10) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please enter your USDT transaction hash',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+                return;
+            }
+
+            try {
+                isVerificationInProgress = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner loading"></i><span>SUBMITTING...</span>';
+                submitBtn.disabled = true;
+
+                // Show loading SweetAlert
+                Swal.fire({
+                    title: 'Submitting Verification',
+                    text: 'Please wait while we process your submission...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    background: '#112240',
+                    color: '#e6f1ff',
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Save verification data with submitted status
+                await db.collection('verifications').doc(currentUser.uid).set({
+                    mt5Account: mt5Account,
+                    broker: 'Vantage',
+                    paymentType: 'crypto',
+                    paymentHash: paymentHash,
+                    currency: 'USDT',
+                    amount: 50,
+                    network: 'BEP-20',
+                    status: 'submitted',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: currentUser.uid,
+                    userName: userData.name,
+                    requirements: 'Vantage broker, $100 deposit minimum'
+                });
+
+                // Update user document
+                await db.collection('users').doc(currentUser.uid).update({
+                    verificationStatus: 'submitted',
+                    lastVerificationAttempt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Reload verification data
+                await loadVerificationData();
+                updateUI();
+
+                // Close loading SweetAlert
+                Swal.close();
+
+                // Show success SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Verification Submitted!',
+                    text: 'Your verification has been submitted successfully.',
+                    confirmButtonColor: '#64ffda',
+                    confirmButtonText: 'Continue',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+
+                // Reset form
+                document.getElementById('mt5Account').value = '';
+                document.getElementById('paymentHash').value = '';
+
+                // Start real-time verification process animation
+                startVerificationProcess();
+
+            } catch (error) {
+                console.error('Error submitting verification:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: 'Error submitting: ' + error.message,
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i><span>SUBMIT FOR VERIFICATION</span>';
+                submitBtn.disabled = false;
+                isVerificationInProgress = false;
+            }
+        }
+
+        // Submit Mobile Verification
+        async function submitMobileVerification() {
+            const mt5Account = document.getElementById('mt5AccountMobile').value.trim();
+            const transactionId = document.getElementById('transactionId').value.trim();
+            const submitBtn = document.getElementById('submitMobileBtn');
+
+            // Validation
+            if (!mt5Account || mt5Account.length < 5) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please enter your Vantage MT5 account number',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+                return;
+            }
+
+            if (!transactionId || transactionId.length < 5) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please enter your mobile payment transaction ID',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+                return;
+            }
+
+            try {
+                isVerificationInProgress = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner loading"></i><span>SUBMITTING...</span>';
+                submitBtn.disabled = true;
+
+                // Show loading SweetAlert
+                Swal.fire({
+                    title: 'Submitting Verification',
+                    text: 'Please wait while we process your submission...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    background: '#112240',
+                    color: '#e6f1ff',
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Save verification data with submitted status
+                await db.collection('verifications').doc(currentUser.uid).set({
+                    mt5Account: mt5Account,
+                    broker: 'Vantage',
+                    paymentType: 'mobile',
+                    transactionId: transactionId,
+                    currency: 'TZS',
+                    amount: 125000,
+                    mobileNumber: '0743470389',
+                    recipientName: 'DAVID JULIUS GINANE',
+                    status: 'submitted',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: currentUser.uid,
+                    userName: userData.name,
+                    requirements: 'Vantage broker, $100 deposit minimum'
+                });
+
+                // Update user document
+                await db.collection('users').doc(currentUser.uid).update({
+                    verificationStatus: 'submitted',
+                    lastVerificationAttempt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Reload verification data
+                await loadVerificationData();
+                updateUI();
+
+                // Close loading SweetAlert
+                Swal.close();
+
+                // Show success SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Verification Submitted!',
+                    text: 'Your verification has been submitted successfully.',
+                    confirmButtonColor: '#64ffda',
+                    confirmButtonText: 'Continue',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+
+                // Reset form
+                document.getElementById('mt5AccountMobile').value = '';
+                document.getElementById('transactionId').value = '';
+
+                // Start real-time verification process animation
+                startVerificationProcess();
+
+            } catch (error) {
+                console.error('Error submitting verification:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: 'Error submitting: ' + error.message,
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+            } finally {
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i><span>SUBMIT FOR VERIFICATION</span>';
+                submitBtn.disabled = false;
+                isVerificationInProgress = false;
+            }
+        }
+
+        // Start real-time verification process animation
+        function startVerificationProcess() {
+            const verificationProcess = document.getElementById('verificationProcess');
+            const processSteps = document.querySelectorAll('.process-step');
+            const progressBar = document.getElementById('verificationProgress');
+            
+            // Show verification process
+            verificationProcess.classList.add('active');
+            
+            // Reset steps
+            processSteps.forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            
+            // Reset progress bar
+            progressBar.style.width = '0%';
+            
+            // Step 1: Submitted (immediate)
+            processSteps[0].classList.add('active');
+            progressBar.style.width = '33%';
+            
+            // Step 2: In Review (after 3 seconds)
+            setTimeout(() => {
+                processSteps[0].classList.remove('active');
+                processSteps[0].classList.add('completed');
+                processSteps[1].classList.add('active');
+                progressBar.style.width = '66%';
+                
+                // Simulate review process
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Verification In Review',
+                    text: 'Your submission is now being reviewed by our team.',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+                
+                // Step 3: Verified (after another 5 seconds - simulated)
+                setTimeout(() => {
+                    processSteps[1].classList.remove('active');
+                    processSteps[1].classList.add('completed');
+                    processSteps[2].classList.add('active');
+                    progressBar.style.width = '100%';
+                    
+                    // Note: In real implementation, this would be triggered by admin approval
+                    // For demo, we just show the animation
+                    
+                }, 5000);
+                
+            }, 3000);
+        }
+
+        // Download EA
+        function downloadEA() {
+            if (!userVerification || userVerification.status !== 'verified') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Download Failed',
+                    text: 'You must be verified to download the DANVIL EA',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Download DANVIL EA',
+                html: `
+                    <div style="text-align: left; margin: 20px 0;">
+                        <p><strong>Instructions:</strong></p>
+                        <ol style="margin-left: 20px;">
+                            <li>Save the file to: <strong>MT5 → MQL5 → Experts</strong></li>
+                            <li>Restart MT5 platform</li>
+                            <li>Enable "Allow Algo Trading" in settings</li>
+                            <li>Drag and drop the EA to your chart</li>
+                        </ol>
+                    </div>
+                `,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#64ffda',
+                cancelButtonColor: '#8892b0',
+                confirmButtonText: 'Start Download',
+                cancelButtonText: 'Cancel',
+                background: '#112240',
+                color: '#e6f1ff'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await startDownload();
+                }
+            });
+        }
+
+        // Start Download
+        async function startDownload() {
+            try {
+                // Show loading SweetAlert
+                Swal.fire({
+                    title: 'Preparing Download',
+                    text: 'Please wait...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    background: '#112240',
+                    color: '#e6f1ff',
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Track download
+                await db.collection('downloads').add({
+                    userId: currentUser.uid,
+                    userName: userData.name,
+                    mt5Account: userVerification.mt5Account,
+                    paymentType: userVerification.paymentType,
+                    item: 'DANVIL_EA',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userAgent: navigator.userAgent
+                });
+
+                // Download link
+                const eaUrl = 'https://raw.githubusercontent.com/danvil33/danvilacademy/main/GPM%20TRADING%20EA%20(2).ex5';
+                const downloadLink = document.createElement('a');
+                downloadLink.href = eaUrl;
+                downloadLink.download = 'DANVIL_EA.ex5';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                // Close loading SweetAlert
+                Swal.close();
+
+                // Show success SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Download Started!',
+                    text: 'DANVIL EA download has started. Check your downloads folder.',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+
+            } catch (error) {
+                console.error('Error downloading:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Download Failed',
+                    text: 'Download error. Please try again.',
+                    confirmButtonColor: '#64ffda',
+                    background: '#112240',
+                    color: '#e6f1ff'
+                });
+            }
+        }
+
+        // Show Alert
+        function showAlert(message, type = 'info') {
+            const alert = document.getElementById('alertMessage');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'flex';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // Support
+        function openSupport() {
+            Swal.fire({
+                title: 'Contact Support',
+                html: `
+                    <div style="text-align: left; margin: 20px 0;">
+                        <p><strong>Email:</strong> support@danviltrading.com</p>
+                        <p><strong>Include in your message:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>Your MT5 account number</li>
+                            <li>Transaction details</li>
+                            <li>Description of the issue</li>
+                        </ul>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonColor: '#64ffda',
+                confirmButtonText: 'Close',
+                background: '#112240',
+                color: '#e6f1ff'
+            });
+        }
+    </script>
+</body>
+</html>
