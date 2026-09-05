@@ -25,6 +25,8 @@
     --sell:#b3261e;
     --sell-bg:#fbeceb;
     --accent:#a85f12;
+    --gold:#9a6b00;
+    --gold-bg:#fbf3e3;
     --max:1180px;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -52,16 +54,20 @@
   .account{display:flex;align-items:center;gap:8px;color:#fff;font-size:.84rem;font-weight:500;cursor:pointer;position:relative}
   .account .initials{width:26px;height:26px;border-radius:50%;background:#26385c;display:grid;place-items:center;font-size:.72rem;font-weight:600}
   .role-tag{font-size:.66rem;font-weight:600;color:var(--accent);border:1px solid rgba(168,95,18,.5);padding:1px 6px;letter-spacing:.03em}
+  .sub-tag{font-size:.66rem;font-weight:600;color:var(--gold);border:1px solid rgba(154,107,0,.5);padding:1px 6px;letter-spacing:.03em}
   .signin-btn{background:transparent;border:1px solid rgba(255,255,255,.28);color:#fff;font-size:.82rem;font-weight:500;padding:7px 14px;cursor:pointer}
   .signin-btn:hover{border-color:#fff}
   .post-btn{background:var(--accent);border:1px solid var(--accent);color:#fff;font-size:.82rem;font-weight:600;padding:7px 14px;cursor:pointer;display:none}
   .post-btn.show{display:inline-flex;align-items:center;gap:6px}
+  .subscribe-nav-btn{background:var(--gold);border:1px solid var(--gold);color:#fff;font-size:.82rem;font-weight:600;padding:7px 14px;cursor:pointer;display:none}
+  .subscribe-nav-btn.show{display:inline-flex;align-items:center;gap:6px}
   .menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.05rem}
   .account-menu{
     position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--line);
-    min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:60;
+    min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:60;
   }
   .account-menu.open{display:block}
+  .account-menu .menu-info{padding:10px 14px;font-size:.76rem;color:var(--muted);border-bottom:1px solid var(--line)}
   .account-menu a,.account-menu button{
     display:block;width:100%;text-align:left;padding:10px 14px;font-size:.84rem;color:var(--body);
     background:none;border:0;border-bottom:1px solid var(--line);cursor:pointer;
@@ -83,14 +89,20 @@
   /* ---------- page intro ---------- */
   .intro{padding:36px 0 22px;border-bottom:1px solid var(--line)}
   .intro h1{font-size:1.7rem;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
-  .intro p{color:var(--muted);font-size:.92rem;margin-top:8px;max-width:520px}
+  .intro p{color:var(--muted);font-size:.92rem;margin-top:8px;max-width:560px}
   .intro .risk-note{font-size:.78rem;color:var(--faint);margin-top:6px}
   .kpi-row{display:flex;flex-wrap:wrap;gap:0;margin-top:22px;border-top:1px solid var(--line)}
   .kpi{padding:14px 26px 0 0;margin-right:26px;border-right:1px solid var(--line)}
   .kpi:last-child{border-right:none}
   .kpi b{display:block;font-family:'IBM Plex Mono',monospace;font-size:1.15rem;font-weight:600;color:var(--ink)}
   .kpi b.up{color:var(--buy)}
+  .kpi b.gold{color:var(--gold)}
   .kpi span{font-size:.74rem;color:var(--muted);font-weight:500}
+
+  .plan-banner{margin-top:20px;border:1px solid var(--line);background:var(--surface);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .plan-banner .txt{font-size:.86rem;color:var(--body)}
+  .plan-banner .txt b{color:var(--ink)}
+  .plan-banner button{background:var(--gold);color:#fff;border:0;padding:9px 16px;font-weight:600;font-size:.82rem;cursor:pointer}
 
   /* ---------- controls ---------- */
   .controls{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
@@ -107,13 +119,16 @@
   /* ---------- table ---------- */
   .feed-section{padding:8px 0 70px}
   .day-label{font-size:.76rem;font-weight:600;color:var(--faint);padding:22px 0 8px;letter-spacing:.02em}
-  .thead,.row{display:grid;grid-template-columns:1.4fr .65fr .9fr .9fr .9fr .6fr 1fr 1fr .6fr;align-items:center;column-gap:12px}
+  .thead,.row{display:grid;grid-template-columns:1.5fr .6fr .85fr .85fr .85fr .55fr .95fr .85fr .8fr;align-items:center;column-gap:12px}
   .thead{padding:9px 4px;border-bottom:1px solid var(--line);font-size:.72rem;font-weight:600;color:var(--faint);letter-spacing:.03em}
   .row{padding:15px 4px;border-bottom:1px solid var(--line)}
   .row:hover{background:var(--surface)}
-  .cell-pair{display:flex;flex-direction:column;gap:2px}
+  .cell-pair{display:flex;flex-direction:column;gap:3px}
   .cell-pair .name{font-weight:600;font-size:.92rem;color:var(--ink)}
   .cell-pair .meta{font-size:.74rem;color:var(--faint)}
+  .type-badge{font-size:.65rem;font-weight:600;letter-spacing:.03em;padding:1px 6px;width:fit-content}
+  .type-badge.sub{color:var(--gold);background:var(--gold-bg)}
+  .type-badge.excl{color:var(--navy-2);background:#eaeef5}
   .dir{font-size:.76rem;font-weight:600;letter-spacing:.03em;padding:3px 8px;display:inline-block;width:fit-content}
   .dir.buy{color:var(--buy);background:var(--buy-bg)}
   .dir.sell{color:var(--sell);background:var(--sell-bg)}
@@ -131,6 +146,13 @@
   .result.neg{color:var(--sell)}
   .result.pending{color:var(--faint);font-weight:400}
   .admin-close{font-size:.74rem;color:var(--accent);font-weight:600;background:none;border:1px solid var(--accent);padding:4px 8px;cursor:pointer}
+
+  .locked-wrap{grid-column:2 / -1;display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface);border:1px dashed var(--line);padding:10px 14px;flex-wrap:wrap}
+  .locked-wrap .lock-txt{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .locked-wrap .lock-txt i{color:var(--faint)}
+  .locked-wrap .unlock-btn{font-size:.8rem;font-weight:600;padding:7px 14px;border:0;cursor:pointer;color:#fff}
+  .locked-wrap .unlock-btn.sub{background:var(--gold)}
+  .locked-wrap .unlock-btn.excl{background:var(--navy-2)}
 
   .row.hidden{display:none}
   .empty{text-align:center;padding:60px 20px;color:var(--muted)}
@@ -154,15 +176,26 @@
   .field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:6px}
   .field input,.field select{width:100%;padding:10px 12px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:.9rem;color:var(--ink)}
   .field input:focus,.field select:focus{outline:0;border-color:var(--navy)}
+  .field input:disabled{background:var(--surface);color:var(--muted)}
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .form-msg{font-size:.8rem;padding:9px 12px;margin-bottom:14px;display:none}
   .form-msg.show{display:block}
   .form-msg.error{background:var(--sell-bg);color:var(--sell)}
   .form-msg.ok{background:var(--buy-bg);color:var(--buy)}
+  .form-msg.info{background:var(--surface-2);color:var(--body)}
   .submit-btn{width:100%;background:var(--navy);color:#fff;border:0;padding:11px;font-weight:600;font-size:.88rem;cursor:pointer}
   .submit-btn:disabled{opacity:.6;cursor:default}
   .submit-btn.accent{background:var(--accent)}
+  .submit-btn.gold{background:var(--gold)}
   .form-note{font-size:.76rem;color:var(--faint);margin-top:12px}
+  .pay-summary{background:var(--surface);border:1px solid var(--line);padding:12px 14px;margin-bottom:16px;font-size:.85rem;display:flex;justify-content:space-between;align-items:center}
+  .pay-summary b{font-family:'IBM Plex Mono',monospace;font-size:1rem;color:var(--ink)}
+  .type-select{display:flex;border:1px solid var(--line);margin-bottom:14px}
+  .type-select button{flex:1;border:0;background:#fff;color:var(--muted);font-weight:500;font-size:.84rem;padding:9px;cursor:pointer;border-right:1px solid var(--line)}
+  .type-select button:last-child{border-right:none}
+  .type-select button.active{background:var(--ink);color:#fff}
+  .spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:-2px}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
   /* ---------- responsive ---------- */
   @media(max-width:900px){
@@ -172,6 +205,7 @@
     .row{grid-template-columns:1fr;row-gap:8px;padding:16px 0}
     .row-line{display:flex;justify-content:space-between;align-items:center}
     .row-line .lbl{font-size:.72rem;color:var(--faint);font-weight:500}
+    .locked-wrap{grid-column:1 / -1}
   }
   @media(max-width:600px){
     .container{padding:0 18px}
@@ -198,6 +232,7 @@
         <a href="#">Pricing</a>
       </nav>
       <div class="nav-actions" id="nav-actions">
+        <button class="subscribe-nav-btn" id="subscribe-nav-btn"><i class="fa-solid fa-crown"></i> Subscribe</button>
         <button class="post-btn" id="post-btn"><i class="fa-solid fa-plus"></i> Post signal</button>
         <button class="signin-btn" id="signin-btn">Sign in</button>
         <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
@@ -221,12 +256,17 @@
   <section class="intro">
     <div class="container">
       <h1>Signal feed</h1>
-      <p>Entry, stop and target on every trade we post, tracked from open to close.</p>
+      <p>Entry, stop and target on every trade we post, tracked from open to close. Subscription signals are included in your monthly plan; exclusive signals are unlocked individually.</p>
       <p class="risk-note">Education only — trading involves risk, results are not guaranteed.</p>
       <div class="kpi-row">
         <div class="kpi"><b id="kpi-active">0</b><span>Active signals</span></div>
         <div class="kpi"><b class="up" id="kpi-winrate">—</b><span>Win rate, closed</span></div>
         <div class="kpi"><b id="kpi-pairs">0</b><span>Pairs tracked</span></div>
+        <div class="kpi"><b class="gold" id="kpi-plan">Guest</b><span>Your plan</span></div>
+      </div>
+      <div class="plan-banner" id="plan-banner" style="display:none">
+        <div class="txt" id="plan-banner-txt"></div>
+        <button id="plan-banner-btn">Subscribe — 50,000 TZS/mo</button>
       </div>
     </div>
   </section>
@@ -237,6 +277,11 @@
         <button class="active" data-status="all">All</button>
         <button data-status="active">Active</button>
         <button data-status="closed">Closed</button>
+      </div>
+      <div class="status-tabs" id="type-tabs">
+        <button class="active" data-type="all">All plans</button>
+        <button data-type="subscription">Subscription</button>
+        <button data-type="exclusive">Exclusive</button>
       </div>
       <div class="pair-tabs" id="pair-tabs">
         <div class="pair-tab active" data-pair="all">All pairs</div>
@@ -292,6 +337,17 @@
       <div class="modal-body">
         <div class="form-msg" id="post-msg"></div>
         <form id="post-form">
+          <div class="field">
+            <label>Signal plan</label>
+            <div class="type-select">
+              <button type="button" class="active" data-posttype="subscription">Subscription</button>
+              <button type="button" data-posttype="exclusive">Exclusive (pay-per-view)</button>
+            </div>
+          </div>
+          <div class="field" id="post-price-field" style="display:none">
+            <label>Price to unlock (TZS)</label>
+            <input type="number" step="1" min="0" id="post-price" placeholder="15000">
+          </div>
           <div class="field"><label>Pair</label><input type="text" id="post-pair" placeholder="XAU/USD" required></div>
           <div class="field-row">
             <div class="field"><label>Direction</label>
@@ -309,6 +365,27 @@
     </div>
   </div>
 
+  <!-- ---------- payment modal (subscription or exclusive unlock) ---------- -->
+  <div class="overlay" id="pay-overlay">
+    <div class="modal">
+      <div class="modal-head"><h3 id="pay-title">Complete payment</h3><button class="modal-close" data-close="pay-overlay">&times;</button></div>
+      <div class="modal-body">
+        <div class="pay-summary">
+          <span id="pay-summary-label">Amount due</span>
+          <b class="mono" id="pay-summary-amount">0 TZS</b>
+        </div>
+        <div class="form-msg" id="pay-msg"></div>
+        <form id="pay-form">
+          <div class="field"><label>Full name</label><input type="text" id="pay-name" required></div>
+          <div class="field"><label>Email</label><input type="email" id="pay-email" required></div>
+          <div class="field"><label>Mobile money phone number</label><input type="tel" id="pay-phone" placeholder="07XXXXXXXX" required></div>
+          <button class="submit-btn gold" type="submit" id="pay-submit">Pay now</button>
+          <p class="form-note">You'll get an M-Pesa / Airtel / Tigo / Halotel prompt on your phone to approve the payment.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
   import {
@@ -317,7 +394,7 @@
   } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
   import {
     getFirestore, collection, addDoc, doc, setDoc, getDoc, updateDoc,
-    onSnapshot, query, orderBy, serverTimestamp
+    onSnapshot, query, where, orderBy, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -334,11 +411,27 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  /* =========================================================
+   * UPDATE THESE TWO PATHS to match wherever you deployed the
+   * two PalmPesa API route files (the "pay via mobile" handler
+   * and the "order status" handler).
+   * ========================================================= */
+  const PAY_ENDPOINT = "/api/palmpesa-pay";
+  const STATUS_ENDPOINT = "/api/palmpesa-status";
+
+  const SUBSCRIPTION_PRICE = 50000; // TZS per month
+  const SUBSCRIPTION_DAYS = 30;
+
   let currentUser = null;
   let currentRole = "guest";
+  let currentUserDoc = null;
+  let unlockedExclusive = new Set(); // signal ids purchased individually
   let signalsCache = [];
   let statusFilter = "all";
+  let typeFilter = "all";
   let pairFilter = "all";
+  let userDocUnsub = null;
+  let purchasesUnsub = null;
 
   /* ---------- helpers ---------- */
   function fmt(n, pairKey){
@@ -376,20 +469,64 @@
     if(diffDays < 7) return "This week";
     return date.toLocaleDateString(undefined,{month:"short", year:"numeric"});
   }
+  function tzs(n){
+    return Number(n || 0).toLocaleString("en-US") + " TZS";
+  }
+  function subscriptionExpiry(){
+    if(!currentUserDoc || !currentUserDoc.subscriptionExpiresAt) return null;
+    const v = currentUserDoc.subscriptionExpiresAt;
+    return v.toDate ? v.toDate() : new Date(v);
+  }
+  function hasActiveSubscription(){
+    const exp = subscriptionExpiry();
+    return !!exp && exp.getTime() > Date.now();
+  }
+  function hasAccess(signal){
+    if(currentRole === "admin") return true;
+    if(signal.type === "exclusive") return unlockedExclusive.has(signal.id);
+    return hasActiveSubscription(); // subscription-type signals
+  }
 
   /* ---------- auth state ---------- */
   onAuthStateChanged(auth, async (user) => {
+    if(userDocUnsub){ userDocUnsub(); userDocUnsub = null; }
+    if(purchasesUnsub){ purchasesUnsub(); purchasesUnsub = null; }
+
     if(user){
       currentUser = user;
-      try{
-        const snap = await getDoc(doc(db,"users",user.uid));
-        currentRole = snap.exists() ? (snap.data().role || "user") : "user";
-      }catch(e){ currentRole = "user"; }
+
+      userDocUnsub = onSnapshot(doc(db,"users",user.uid), snap => {
+        currentUserDoc = snap.exists() ? snap.data() : null;
+        currentRole = currentUserDoc?.role || "user";
+        renderAccountArea();
+        renderPlanBanner();
+        renderFeed();
+      }, () => {
+        currentRole = "user";
+        renderAccountArea();
+      });
+
+      purchasesUnsub = onSnapshot(
+        query(collection(db,"purchases"), where("userId","==",user.uid)),
+        snap => {
+          unlockedExclusive = new Set(
+            snap.docs
+              .map(d => d.data())
+              .filter(p => p.type === "exclusive" && p.status === "completed")
+              .map(p => p.signalId)
+          );
+          renderFeed();
+        }
+      );
+
     } else {
       currentUser = null;
       currentRole = "guest";
+      currentUserDoc = null;
+      unlockedExclusive = new Set();
     }
     renderAccountArea();
+    renderPlanBanner();
     renderFeed();
   });
 
@@ -397,40 +534,69 @@
     const wrap = document.getElementById('nav-actions');
     const signinBtn = document.getElementById('signin-btn');
     const postBtn = document.getElementById('post-btn');
+    const subNavBtn = document.getElementById('subscribe-nav-btn');
 
     document.getElementById('account-el')?.remove();
+
+    document.getElementById('kpi-plan').textContent =
+      currentRole === 'admin' ? 'Admin' :
+      !currentUser ? 'Guest' :
+      hasActiveSubscription() ? 'Subscribed' : 'Free';
 
     if(currentUser){
       signinBtn.style.display = "none";
       postBtn.classList.toggle('show', currentRole === 'admin');
+      subNavBtn.classList.toggle('show', currentRole !== 'admin' && !hasActiveSubscription());
 
       const initials = (currentUser.displayName || currentUser.email || "U").trim().split(" ").map(p=>p[0]).slice(0,2).join("").toUpperCase();
+      const exp = subscriptionExpiry();
+      const subLine = currentRole === 'admin'
+        ? 'Admin account'
+        : hasActiveSubscription()
+          ? `Subscribed until ${exp.toLocaleDateString()}`
+          : 'No active subscription';
+
       const el = document.createElement('div');
       el.className = "account";
       el.id = "account-el";
       el.innerHTML = `
         <span class="initials">${initials}</span>
         <span class="name">${currentUser.displayName || currentUser.email}</span>
-        ${currentRole === 'admin' ? '<span class="role-tag">ADMIN</span>' : ''}
+        ${currentRole === 'admin' ? '<span class="role-tag">ADMIN</span>' : (hasActiveSubscription() ? '<span class="sub-tag">SUBSCRIBED</span>' : '')}
         <div class="account-menu" id="account-menu">
+          <div class="menu-info">${subLine}</div>
+          ${currentRole !== 'admin' && !hasActiveSubscription() ? '<button id="menu-subscribe-btn">Subscribe — ' + tzs(SUBSCRIPTION_PRICE) + '/mo</button>' : ''}
           <button id="signout-btn">Sign out</button>
         </div>`;
       wrap.insertBefore(el, postBtn);
       el.addEventListener('click', (e) => {
         if(e.target.id === 'signout-btn'){ signOut(auth); return; }
+        if(e.target.id === 'menu-subscribe-btn'){ openPayModal('subscription'); return; }
         document.getElementById('account-menu').classList.toggle('open');
       });
     } else {
       signinBtn.style.display = "inline-flex";
       postBtn.classList.remove('show');
+      subNavBtn.classList.remove('show');
     }
+  }
+
+  function renderPlanBanner(){
+    const banner = document.getElementById('plan-banner');
+    const txt = document.getElementById('plan-banner-txt');
+    if(!currentUser || currentRole === 'admin' || hasActiveSubscription()){
+      banner.style.display = 'none';
+      return;
+    }
+    banner.style.display = 'flex';
+    txt.innerHTML = `<b>Get every subscription signal this month.</b> Subscribe once for ${tzs(SUBSCRIPTION_PRICE)} — exclusive signals are unlocked separately.`;
   }
 
   /* ---------- signals listener ---------- */
   function listenSignals(){
     const q = query(collection(db,"signals"), orderBy("createdAt","desc"));
     onSnapshot(q, snap => {
-      signalsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      signalsCache = snap.docs.map(d => ({ id: d.id, type: "subscription", ...d.data() }));
       renderPairTabs();
       renderKPIs();
       renderFeed();
@@ -481,22 +647,46 @@
     await updateDoc(doc(db,"signals",id), { status: outcome, pips });
   }
   window.__closeSignal = closeSignal;
+  window.__unlockSignal = (id) => openPayModal('exclusive', id);
 
   function rowHTML(s){
-    const entryF = fmt(s.entry, s.pairKey);
-    const slF = fmt(s.sl, s.pairKey);
-    const tpF = fmt(s.tp, s.pairKey);
     const adminAction = (currentRole === 'admin' && s.status === 'active')
       ? `<div class="row-line"><button class="admin-close" onclick="__closeSignal('${s.id}','hit')">Hit</button>
          <button class="admin-close" style="margin-left:6px" onclick="__closeSignal('${s.id}','stopped')">Stopped</button></div>`
       : `<div></div>`;
-    return `
-    <div class="row" data-status="${s.status}" data-pair="${s.pairKey}">
+
+    const typeBadge = s.type === 'exclusive'
+      ? `<span class="type-badge excl">EXCLUSIVE · ${tzs(s.price)}</span>`
+      : `<span class="type-badge sub">SUBSCRIPTION</span>`;
+
+    const header = `
       <div class="cell-pair">
         <span class="name">${s.pair}</span>
+        ${typeBadge}
         <span class="meta">${relativeTime(s.createdAt)} · ${s.postedBy || 'Danvil Academy'}</span>
       </div>
-      <div><span class="dir ${s.dir}">${s.dir.toUpperCase()}</span></div>
+      <div><span class="dir ${s.dir}">${s.dir.toUpperCase()}</span></div>`;
+
+    if(!hasAccess(s)){
+      const btnClass = s.type === 'exclusive' ? 'excl' : 'sub';
+      const btnLabel = s.type === 'exclusive' ? `Unlock — ${tzs(s.price)}` : `Subscribe — ${tzs(SUBSCRIPTION_PRICE)}/mo`;
+      const onclick = s.type === 'exclusive' ? `__unlockSignal('${s.id}')` : `__subscribeCTA()`;
+      return `
+      <div class="row" data-status="${s.status}" data-pair="${s.pairKey}" data-type="${s.type}">
+        ${header}
+        <div class="locked-wrap">
+          <span class="lock-txt"><i class="fa-solid fa-lock"></i> Entry, stop and target are locked</span>
+          <button class="unlock-btn ${btnClass}" onclick="${onclick}">${btnLabel}</button>
+        </div>
+      </div>`;
+    }
+
+    const entryF = fmt(s.entry, s.pairKey);
+    const slF = fmt(s.sl, s.pairKey);
+    const tpF = fmt(s.tp, s.pairKey);
+    return `
+    <div class="row" data-status="${s.status}" data-pair="${s.pairKey}" data-type="${s.type}">
+      ${header}
       <div class="row-line"><span class="lbl">Entry</span><span class="val mono">${entryF}</span></div>
       <div class="row-line"><span class="lbl">Stop</span><span class="val sl mono">${slF}</span></div>
       <div class="row-line"><span class="lbl">Target</span><span class="val tp mono">${tpF}</span></div>
@@ -506,6 +696,11 @@
       ${adminAction}
     </div>`;
   }
+
+  window.__subscribeCTA = () => {
+    if(!currentUser){ document.getElementById('auth-msg').textContent = ''; document.getElementById('auth-overlay').classList.add('open'); return; }
+    openPayModal('subscription');
+  };
 
   function renderFeed(){
     const feed = document.getElementById('feed');
@@ -524,6 +719,7 @@
     Object.keys(grouped).forEach(day => {
       const items = grouped[day].filter(s =>
         (statusFilter === "all" || (statusFilter === "closed" ? s.status !== "active" : s.status === statusFilter)) &&
+        (typeFilter === "all" || s.type === typeFilter) &&
         (pairFilter === "all" || s.pairKey === pairFilter)
       );
       if(!items.length) return;
@@ -533,16 +729,25 @@
     feed.innerHTML = any ? html : `<div class="empty"><p>No signals match this filter.</p></div>`;
   }
 
-  document.querySelectorAll('.status-tabs button').forEach(btn => {
+  document.querySelectorAll('.status-tabs button[data-status]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.status-tabs button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.status-tabs button[data-status]').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       statusFilter = btn.dataset.status;
       renderFeed();
     });
   });
 
-  /* ---------- modals ---------- */
+  document.querySelectorAll('#type-tabs button[data-type]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#type-tabs button[data-type]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      typeFilter = btn.dataset.type;
+      renderFeed();
+    });
+  });
+
+  /* ---------- modals: open/close ---------- */
   function openModal(id){ document.getElementById(id).classList.add('open'); }
   function closeModal(id){ document.getElementById(id).classList.remove('open'); }
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(b.dataset.close)));
@@ -550,6 +755,8 @@
 
   document.getElementById('signin-btn').addEventListener('click', () => openModal('auth-overlay'));
   document.getElementById('post-btn').addEventListener('click', () => openModal('post-overlay'));
+  document.getElementById('subscribe-nav-btn').addEventListener('click', () => openPayModal('subscription'));
+  document.getElementById('plan-banner-btn').addEventListener('click', () => openPayModal('subscription'));
 
   document.querySelectorAll('[data-authtab]').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -562,12 +769,10 @@
     });
   });
 
-  function showMsg(id, text, isError){
+  function showMsg(id, text, cls){
     const el = document.getElementById(id);
     el.textContent = text;
-    el.classList.add('show');
-    el.classList.toggle('error', isError);
-    el.classList.toggle('ok', !isError);
+    el.className = 'form-msg show ' + (cls || 'error');
   }
 
   document.getElementById('signin-form').addEventListener('submit', async (e) => {
@@ -581,7 +786,7 @@
       closeModal('auth-overlay');
       e.target.reset();
     }catch(err){
-      showMsg('auth-msg', err.code === 'auth/invalid-credential' ? 'Incorrect email or password.' : err.message, true);
+      showMsg('auth-msg', err.code === 'auth/invalid-credential' ? 'Incorrect email or password.' : err.message, 'error');
     }
     btn.disabled = false;
   });
@@ -597,40 +802,198 @@
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(cred.user, { displayName: name });
       await setDoc(doc(db,"users",cred.user.uid), {
-        name, email, role: "user", createdAt: serverTimestamp()
+        name, email, role: "user", subscriptionActive: false, subscriptionExpiresAt: null, createdAt: serverTimestamp()
       });
       closeModal('auth-overlay');
       e.target.reset();
     }catch(err){
-      showMsg('auth-msg', err.code === 'auth/email-already-in-use' ? 'That email is already registered.' : err.message, true);
+      showMsg('auth-msg', err.code === 'auth/email-already-in-use' ? 'That email is already registered.' : err.message, 'error');
     }
     btn.disabled = false;
   });
 
+  /* ---------- post signal (admin) ---------- */
+  let postType = "subscription";
+  document.querySelectorAll('[data-posttype]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-posttype]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      postType = btn.dataset.posttype;
+      document.getElementById('post-price-field').style.display = postType === 'exclusive' ? 'block' : 'none';
+      document.getElementById('post-price').required = postType === 'exclusive';
+    });
+  });
+
   document.getElementById('post-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if(currentRole !== 'admin'){ showMsg('post-msg','Only admins can post signals.', true); return; }
+    if(currentRole !== 'admin'){ showMsg('post-msg','Only admins can post signals.', 'error'); return; }
     const pair = document.getElementById('post-pair').value.trim().toUpperCase();
     const pairKey = pair.replace('/','');
     const dir = document.getElementById('post-dir').value;
     const entry = parseFloat(document.getElementById('post-entry').value);
     const sl = parseFloat(document.getElementById('post-sl').value);
     const tp = parseFloat(document.getElementById('post-tp').value);
+    const price = postType === 'exclusive' ? parseInt(document.getElementById('post-price').value, 10) : null;
+    if(postType === 'exclusive' && (!price || price <= 0)){
+      showMsg('post-msg','Set a price greater than 0 for an exclusive signal.', 'error');
+      return;
+    }
     const btn = document.getElementById('post-submit');
     btn.disabled = true;
     try{
-      await addDoc(collection(db,"signals"), {
+      const payload = {
         pair, pairKey, dir, entry, sl, tp,
+        type: postType,
         status: "active",
         createdAt: serverTimestamp(),
         postedBy: currentUser.displayName || currentUser.email
-      });
+      };
+      if(postType === 'exclusive') payload.price = price;
+      await addDoc(collection(db,"signals"), payload);
       closeModal('post-overlay');
       e.target.reset();
+      document.querySelectorAll('[data-posttype]')[0].click();
     }catch(err){
-      showMsg('post-msg', err.message, true);
+      showMsg('post-msg', err.message, 'error');
     }
     btn.disabled = false;
+  });
+
+  /* ---------- payment flow (subscription or exclusive unlock) ---------- */
+  let payContext = { kind: null, signalId: null, amount: 0 };
+
+  function openPayModal(kind, signalId){
+    if(!currentUser){ openModal('auth-overlay'); return; }
+    let amount = SUBSCRIPTION_PRICE;
+    let title = 'Subscribe — monthly plan';
+    let label = 'Subscription (30 days)';
+    if(kind === 'exclusive'){
+      const signal = signalsCache.find(s => s.id === signalId);
+      if(!signal) return;
+      amount = signal.price;
+      title = `Unlock ${signal.pair} signal`;
+      label = `${signal.pair} · one-time unlock`;
+    }
+    payContext = { kind, signalId: signalId || null, amount };
+    document.getElementById('pay-title').textContent = title;
+    document.getElementById('pay-summary-label').textContent = label;
+    document.getElementById('pay-summary-amount').textContent = tzs(amount);
+    document.getElementById('pay-name').value = currentUser.displayName || '';
+    document.getElementById('pay-email').value = currentUser.email || '';
+    document.getElementById('pay-phone').value = '';
+    document.getElementById('pay-msg').className = 'form-msg';
+    document.getElementById('pay-submit').disabled = false;
+    document.getElementById('pay-submit').innerHTML = 'Pay now';
+    openModal('pay-overlay');
+  }
+
+  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+  async function pollPaymentStatus(orderId, purchaseRef, maxTries = 20, intervalMs = 4000){
+    for(let i = 0; i < maxTries; i++){
+      await sleep(intervalMs);
+      try{
+        const res = await fetch(STATUS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order_id: orderId })
+        });
+        const data = await res.json();
+        const status = data.payment_status;
+        if(status === 'COMPLETED'){
+          await onPaymentCompleted(purchaseRef, data);
+          return 'COMPLETED';
+        }
+        if(status === 'FAILED'){
+          await updateDoc(purchaseRef, { status: 'failed' });
+          return 'FAILED';
+        }
+        showMsg('pay-msg', `Waiting for confirmation on your phone... (${i+1}/${maxTries})`, 'info');
+      }catch(err){
+        // keep polling; a transient network error shouldn't kill the flow
+      }
+    }
+    return 'PENDING';
+  }
+
+  async function onPaymentCompleted(purchaseRef, statusData){
+    await updateDoc(purchaseRef, {
+      status: 'completed',
+      completedAt: serverTimestamp(),
+      transid: statusData.transid || null,
+      channel: statusData.channel || null
+    });
+    if(payContext.kind === 'subscription'){
+      const newExpiry = new Date(Date.now() + SUBSCRIPTION_DAYS * 86400000);
+      await updateDoc(doc(db,'users',currentUser.uid), {
+        subscriptionActive: true,
+        subscriptionExpiresAt: newExpiry
+      });
+    }
+    // exclusive access is derived live from the "purchases" collection listener
+  }
+
+  document.getElementById('pay-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('pay-name').value.trim();
+    const email = document.getElementById('pay-email').value.trim();
+    const phone = document.getElementById('pay-phone').value.trim();
+    const btn = document.getElementById('pay-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Sending request...';
+    showMsg('pay-msg', 'Contacting payment provider...', 'info');
+
+    try{
+      const res = await fetch(PAY_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, email, phone,
+          amount: payContext.amount,
+          postId: payContext.kind === 'exclusive' ? payContext.signalId : 'subscription',
+          userId: currentUser.uid
+        })
+      });
+      const data = await res.json();
+
+      if(!data.success || !data.order_id){
+        showMsg('pay-msg', data.message || 'Payment could not be started. Try again.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'Pay now';
+        return;
+      }
+
+      const purchaseDoc = await addDoc(collection(db,'purchases'), {
+        userId: currentUser.uid,
+        type: payContext.kind,
+        signalId: payContext.signalId,
+        amount: payContext.amount,
+        orderId: data.order_id,
+        transactionId: data.transaction_id || null,
+        status: 'pending',
+        createdAt: serverTimestamp()
+      });
+
+      showMsg('pay-msg', 'Check your phone and approve the payment prompt...', 'info');
+      const outcome = await pollPaymentStatus(data.order_id, purchaseDoc);
+
+      if(outcome === 'COMPLETED'){
+        showMsg('pay-msg', 'Payment confirmed. Access unlocked!', 'ok');
+        setTimeout(() => closeModal('pay-overlay'), 1400);
+      } else if(outcome === 'FAILED'){
+        showMsg('pay-msg', 'Payment failed or was cancelled. You can try again.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'Pay now';
+      } else {
+        showMsg('pay-msg', 'Still pending. If you approved it, this will unlock automatically shortly — you can close this window.', 'info');
+        btn.disabled = false;
+        btn.innerHTML = 'Check again';
+      }
+    }catch(err){
+      showMsg('pay-msg', 'Something went wrong: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = 'Pay now';
+    }
   });
 
   listenSignals();
